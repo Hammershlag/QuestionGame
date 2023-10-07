@@ -18,6 +18,7 @@ public class Server {
     private int maxClients;
     private ConcurrentHashMap<String, Socket> clients;
     private int pingInterval;
+    private int minPingInterval;
     private long lastPingTime;
 
     public Server(ConfigHandler configHandler) {
@@ -26,6 +27,7 @@ public class Server {
         this.maxClients = configHandler.getInt("max_clients");
         this.clients = new ConcurrentHashMap<>();
         this.pingInterval = configHandler.getInt("ping_interval"); // in milliseconds
+        this.minPingInterval = configHandler.getInt("min_ping_interval"); // in milliseconds
         this.lastPingTime = System.currentTimeMillis();
     }
 
@@ -42,7 +44,7 @@ public class Server {
 
             // Create a separate thread for pinging clients
             Thread pingThread = new Thread(this::pingClientsInBackground);
-            pingThread.setDaemon(true);
+            pingThread.setDaemon(true); // Mark the thread as daemon, so it won't prevent the JVM from exiting
             pingThread.start();
 
             // Create a separate thread for asynchronous input listening
@@ -180,7 +182,7 @@ public class Server {
 
             // Sleep for a short duration to avoid busy-waiting
             try {
-                Thread.sleep(50); // Sleep for 50 milliseconds
+                Thread.sleep(minPingInterval); // Sleep for 50 milliseconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

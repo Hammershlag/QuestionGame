@@ -105,6 +105,16 @@ public class Client {
             if ("new".equalsIgnoreCase(command)) {
                 // Increment the client counter and create a new client with the incremented number
                 createAndSendClient(message);
+            } else if (command.startsWith("newX") && command.length() > 3) {
+                // Extract the number of times to execute the "new" command
+                try {
+                    int repeatCount = Integer.parseInt(command.substring(4));
+                    for (int i = 0; i < repeatCount; i++) {
+                        createAndSendClient(message);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid command format: " + command);
+                }
             } else if (clients.containsKey(command)) {
                 // Send the message from the specified client
                 if ("exit".equalsIgnoreCase(message)) {
