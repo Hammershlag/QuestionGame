@@ -29,6 +29,8 @@ public class Client {
 
     public void startClient() {
         System.out.println("Client started on: " + ip + ":" + port);
+        System.out.println("All the commands are available in the README.md file");
+        System.out.println();
 
         // Implement client logic here
         // Initialize the client counter
@@ -39,41 +41,27 @@ public class Client {
 
             while (true) {
                 // Read user input
-                System.out.print("Enter a command ('clientNumber:message', 'new:message', or 'clientNumber:exit'): ");
+                System.out.print("Enter a command: ");
                 System.out.println();
                 line = sc.nextLine();
 
                 if ("exit".equalsIgnoreCase(line)) {
+                    // Exit the program after closing all clients
+                    closeAllClients();
+                    System.exit(0);
                     break;
-                }
-
-                String[] parts = line.split(":", 2);
-                if (parts.length == 2) {
-                    String command = parts[0].trim();
-                    String message = parts[1].trim();
-
-                    if ("new".equalsIgnoreCase(command)) {
-                        // Increment the client counter and create a new client with the incremented number
-                        createAndSendClient(message);
-                    } else if (clients.containsKey(command)) {
-                        // Send the message from the specified client
-                        if ("exit".equalsIgnoreCase(message)) {
-                            // Close the client's socket and remove it from the map
-                            closeClient(clients.get(command), command);
-                        } else {
-                            sendMessage(clients.get(command), message);
-                        }
-                    } else {
-                        System.out.println("Client number invalid");
-                    }
+                } else if ("all:exit".equalsIgnoreCase(line)) {
+                    // Send exit messages to all clients, closing all connections
+                    sendExitToAllClients();
                 } else {
-                    System.out.println("Invalid command format");
+                    processCommand(line);
                 }
 
                 // Display the list of connected clients
                 System.out.print("Number of connected clients: " + clients.size() + " ");
                 if (!clients.isEmpty()) {
                     System.out.print(clients.keySet());
+                    System.out.println();
                 }
                 System.out.println();
             }
@@ -85,11 +73,33 @@ public class Client {
         }
     }
 
+    private void processCommand(String line) {
+        String[] parts = line.split(":", 2);
+        if (parts.length == 2) {
+            String command = parts[0].trim();
+            String message = parts[1].trim();
 
-
+            if ("new".equalsIgnoreCase(command)) {
+                // Increment the client counter and create a new client with the incremented number
+                createAndSendClient(message);
+            } else if (clients.containsKey(command)) {
+                // Send the message from the specified client
+                if ("exit".equalsIgnoreCase(message)) {
+                    // Close the client's socket and remove it from the map
+                    closeClient(clients.get(command), command);
+                } else {
+                    sendMessage(clients.get(command), message);
+                }
+            } else {
+                System.out.println("Client number invalid");
+            }
+        } else {
+            System.out.println("Invalid command format");
+        }
+    }
 
     private void createAndSendClient(String message) {
-        //try to connect to the server n times
+        // Try to connect to the server n times
         for (int i = 0; i < connectionTries; i++) {
             try {
                 // Create a new client socket
@@ -112,7 +122,7 @@ public class Client {
                     socket.close();
                     System.out.println("Server did not respond. Client creation failed.");
                 }
-            } catch(IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -129,8 +139,6 @@ public class Client {
             return null;
         }
     }
-
-
 
     private void sendMessage(Socket socket, String message) {
         try {
@@ -150,7 +158,7 @@ public class Client {
                 public void run() {
                     // Display "Server not responding" if no response within max_response_time seconds
                     System.out.println("Server not responding");
-                    System.out.print("Enter a command ('clientNumber:message', 'new:message', or 'clientNumber:exit'): ");
+                    System.out.print("Enter a command: ");
                     System.out.println();
                 }
             };
@@ -164,7 +172,6 @@ public class Client {
 
             // Display the server reply and the number of connected clients
             System.out.println("Server replied: " + response);
-            System.out.println("Number of connected clients: " + clients.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,6 +189,22 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendExitToAllClients() {
+        // Create a copy of client numbers to avoid ConcurrentModificationException
+        List<String> clientNumbers = new ArrayList<>(clients.keySet());
+
+        for (String clientNumber : clientNumbers) {
+            sendMessage(clients.get(clientNumber), "exit");
+            closeClient(clients.get(clientNumber), clientNumber);
+        }
+    }
+
+
+    private void closeAllClients() {
+        sendExitToAllClients();
+        clients.clear();
     }
 
     public static void main(String[] args) {

@@ -1,0 +1,9 @@
+# Client side commands
+
+| Command                | Explanation                                                                                         |
+|------------------------|-----------------------------------------------------------------------------------------------------|
+| `new:message`          | Send a message to the server from a new client.                                                     |
+| `clientNumber:message` | Send a message to the server from a client with the specified number.                               |
+| `clientNumber:exit`    | Send an exit message to the server from a client with the specified number, closing the connection. |
+| `all:exit`             | Send an exit message to the server from all clients, closing all connections.                       |
+| `exit`                 | Exit program after closing all clients                                                              |

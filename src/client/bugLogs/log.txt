@@ -1,0 +1,49 @@
+C:\Users\tomek\.jdks\openjdk-21\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.2\lib\idea_rt.jar=57572:C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.2\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath C:\Projects\TestGame\TestGameServer\out\production\TestGameServer client.Client
+
+Client started on: localhost:1234
+All the commands are available in the README.md file
+
+Enter a command:
+new:1
+Server replied: Server received: 1
+Number of connected clients: 1 [1]
+
+Enter a command:
+new:2
+Server replied: Server received: 2
+Number of connected clients: 2 [1, 2]
+
+Enter a command:
+new:3
+Server replied: Server received: 3
+Number of connected clients: 3 [1, 2, 3]
+
+Enter a command:
+new:4
+Server replied: Server received: 4
+Number of connected clients: 4 [1, 2, 3, 4]
+
+Enter a command:
+2:22
+Server replied: Ping
+Number of connected clients: 4 [1, 2, 3, 4]
+
+Enter a command:
+2:222
+Server replied: Server received: 22
+Number of connected clients: 4 [1, 2, 3, 4]
+
+Enter a command:
+2:exit
+Client 2 closed.
+Number of connected clients: 3 [1, 3, 4]
+
+Enter a command:
+3:33
+Server replied: Ping
+Number of connected clients: 3 [1, 3, 4]
+
+Enter a command:
+3:333
+Server replied: Server received: 33
+Number of connected clients: 3 [1, 3, 4]
