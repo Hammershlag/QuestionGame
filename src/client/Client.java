@@ -14,11 +14,15 @@ public class Client {
     private double maxResponseTime;
     private Map<String, Socket> clients; // Map to store client numbers and their sockets
     private Timer timer;
+    private int firstClientIndex;
+    private int connectionTries;
 
     public Client(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
         this.ip = configHandler.getString("ip");
         this.maxResponseTime = configHandler.getDouble("max_response_time");
+        this.firstClientIndex = configHandler.getInt("first_client_index");
+        this.connectionTries = configHandler.getInt("connection_tries");
         this.clients = new HashMap<>();
         this.timer = new Timer();
     }
@@ -27,6 +31,7 @@ public class Client {
         System.out.println("Client started on: " + ip + ":" + port);
 
         // Implement client logic here
+        // Initialize the client counter
         try {
             // Object of scanner class
             Scanner sc = new Scanner(System.in);
@@ -48,7 +53,7 @@ public class Client {
                     String message = parts[1].trim();
 
                     if ("new".equalsIgnoreCase(command)) {
-                        // Create a new client and send the message
+                        // Increment the client counter and create a new client with the incremented number
                         createAndSendClient(message);
                     } else if (clients.containsKey(command)) {
                         // Send the message from the specified client
@@ -64,6 +69,13 @@ public class Client {
                 } else {
                     System.out.println("Invalid command format");
                 }
+
+                // Display the list of connected clients
+                System.out.print("Number of connected clients: " + clients.size() + " ");
+                if (!clients.isEmpty()) {
+                    System.out.print(clients.keySet());
+                }
+                System.out.println();
             }
 
             // Closing the scanner object
@@ -73,21 +85,52 @@ public class Client {
         }
     }
 
+
+
+
     private void createAndSendClient(String message) {
-        try {
-            // Create a new client socket
-            Socket socket = new Socket(ip, port);
+        //try to connect to the server n times
+        for (int i = 0; i < connectionTries; i++) {
+            try {
+                // Create a new client socket
+                Socket socket = new Socket(ip, port);
 
-            // Add the new client to the map
-            String newClientNumber = "" + (clients.size() + 1);
-            clients.put(newClientNumber, socket);
+                // Send the message from the new client
+                sendMessage(socket, message);
 
-            // Send the message from the new client
-            sendMessage(socket, message);
-        } catch (IOException e) {
-            e.printStackTrace();
+                // Wait for the server response
+                String response = receiveMessage(socket);
+
+                // Check if the server replied with null
+                if (response != null) {
+                    // Increment the client counter and add the new client to the map
+                    String newClientNumber = "" + (firstClientIndex++);
+                    clients.put(newClientNumber, socket);
+                    break;
+                } else {
+                    // Server replied with null, close the client socket
+                    socket.close();
+                    System.out.println("Server did not respond. Client creation failed.");
+                }
+            } catch(IOException e){
+                e.printStackTrace();
+            }
         }
     }
+
+    private String receiveMessage(Socket socket) {
+        try {
+            // Reading from the server
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // Wait for the server response
+            return in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     private void sendMessage(Socket socket, String message) {
         try {

@@ -2,7 +2,12 @@ all:
     port=1234
     ip=localhost
 server:
-    max_clients=2
+    max_clients=5
+    ping_interval=500
+    #milliseconds
 client:
     max_response_time=1
+    #seconds
+    first_client_index=1
+    connection_tries=10
 
