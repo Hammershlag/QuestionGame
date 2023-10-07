@@ -7,3 +7,4 @@
 | `clientNumber:exit`    | Send an exit message to the server from a client with the specified number, closing the connection. |
 | `all:exit`             | Send an exit message to the server from all clients, closing all connections.                       |
 | `exit`                 | Exit program after closing all clients                                                              |
+| `clear` | Clears terminal                        |

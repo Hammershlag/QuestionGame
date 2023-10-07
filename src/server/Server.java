@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class Server {
@@ -41,8 +42,13 @@ public class Server {
 
             // Create a separate thread for pinging clients
             Thread pingThread = new Thread(this::pingClientsInBackground);
-            pingThread.setDaemon(true); // Mark the thread as daemon so it won't prevent the JVM from exiting
+            pingThread.setDaemon(true);
             pingThread.start();
+
+            // Create a separate thread for asynchronous input listening
+            Thread inputThread = new Thread(this::listenForInputInBackground);
+            inputThread.setDaemon(true);
+            inputThread.start();
 
             while (true) {
                 // Accept client connections until reaching the maximum
@@ -83,6 +89,78 @@ public class Server {
             }
         }
     }
+
+    private void listenForInputInBackground() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.nextLine().trim();
+
+            if ("exit".equalsIgnoreCase(input)) {
+                // Handle 'exit' command
+                closeAllClientConnections();
+                System.exit(0); // Exit the server
+            } else if ("ping".equalsIgnoreCase(input)) {
+                // Handle the "ping" command to ping all client connections
+                pingAllClients();
+            } else if ("clear".equalsIgnoreCase(input)) {
+                // Handle the "clear" command to clear the terminal
+                clearTerminal();
+            } else {
+                System.out.println("Unknown command: " + input);
+            }
+        }
+    }
+
+    private void clearTerminal() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // For Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // For Unix/Linux or macOS
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void pingAllClients() {
+        // Iterate through clients and send ping messages
+        for (Map.Entry<String, Socket> entry : clients.entrySet()) {
+            String clientKey = entry.getKey();
+            Socket client = entry.getValue();
+            try {
+                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+                // Send a ping message to the client
+                out.println("Forced ping");
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void closeAllClientConnections() {
+        Iterator<Map.Entry<String, Socket>> iterator = clients.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Socket> entry = iterator.next();
+            Socket client = entry.getValue();
+            try {
+                client.close();
+                iterator.remove();
+                System.out.println("Connection with client " + entry.getKey() + " closed.");
+            } catch (IOException e) {
+                // Handle any exceptions as needed
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private String getClientKey(Socket socket) {
         return socket.getInetAddress().getHostAddress() + ":" + socket.getPort();

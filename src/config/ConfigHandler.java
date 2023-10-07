@@ -23,8 +23,15 @@ public class ConfigHandler {
             String section = null;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty() || line.startsWith("#")) {
-                    continue; // Skip empty lines and comments
+
+                // Remove comments (lines starting with #)
+                int commentIndex = line.indexOf('#');
+                if (commentIndex != -1) {
+                    line = line.substring(0, commentIndex).trim();
+                }
+
+                if (line.isEmpty()) {
+                    continue; // Skip empty lines
                 }
 
                 if (line.endsWith(":")) {

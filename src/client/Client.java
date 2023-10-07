@@ -5,6 +5,7 @@ import config.ConfigHandler;
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class Client {
     private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.txt";
@@ -16,6 +17,7 @@ public class Client {
     private Timer timer;
     private int firstClientIndex;
     private int connectionTries;
+    private ExecutorService messageReceiverExecutor;
 
     public Client(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
@@ -25,6 +27,7 @@ public class Client {
         this.connectionTries = configHandler.getInt("connection_tries");
         this.clients = new HashMap<>();
         this.timer = new Timer();
+        this.messageReceiverExecutor = Executors.newCachedThreadPool();
     }
 
     public void startClient() {
@@ -48,11 +51,15 @@ public class Client {
                 if ("exit".equalsIgnoreCase(line)) {
                     // Exit the program after closing all clients
                     closeAllClients();
+                    messageReceiverExecutor.shutdownNow();
                     System.exit(0);
                     break;
                 } else if ("all:exit".equalsIgnoreCase(line)) {
                     // Send exit messages to all clients, closing all connections
                     sendExitToAllClients();
+                } else if ("clear".equalsIgnoreCase(line)) {
+                    // Handle the "clear" command to clear the terminal
+                    clearTerminal();
                 } else {
                     processCommand(line);
                 }
@@ -69,6 +76,22 @@ public class Client {
             // Closing the scanner object
             sc.close();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearTerminal() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // For Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // For Unix/Linux or macOS
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -116,6 +139,10 @@ public class Client {
                     // Increment the client counter and add the new client to the map
                     String newClientNumber = "" + (firstClientIndex++);
                     clients.put(newClientNumber, socket);
+
+                    // Start a message receiver thread for the new client
+                    startMessageReceiver(socket, newClientNumber);
+
                     break;
                 } else {
                     // Server replied with null, close the client socket
@@ -145,9 +172,6 @@ public class Client {
             // Writing to the server
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            // Reading from the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
             // Sending the user input to the server
             out.println(message);
             out.flush();
@@ -165,7 +189,7 @@ public class Client {
             timer.schedule(timerTask, (int) (maxResponseTime * 1000));
 
             // Wait for the server response
-            String response = in.readLine();
+            String response = receiveMessage(socket);
 
             // Cancel the timer task as a response has been received
             timerTask.cancel();
@@ -201,6 +225,10 @@ public class Client {
         }
     }
 
+    private void startMessageReceiver(Socket socket, String clientNumber) {
+        // Create a new message receiver thread for the client
+        messageReceiverExecutor.execute(new MessageReceiver(socket, clientNumber));
+    }
 
     private void closeAllClients() {
         sendExitToAllClients();
@@ -213,3 +241,4 @@ public class Client {
         client.startClient();
     }
 }
+
