@@ -21,7 +21,7 @@ public class MessageHandler {
         this.timestamp = timestamp;
     }
     public String toString() {
-        return "MessageHandler::toString() called; Message: " + message + "; Sender: " + sender + "; Receiver: " + receiver + "; Timestamp: " + timestamp + "\n";
+        return "Message: " + message + "; Sender: " + sender + "; Receiver: " + receiver + "; Timestamp: " + timestamp + "\n";
     }
 
     public String getMessage() {

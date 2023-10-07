@@ -1,0 +1,8 @@
+all:
+    port=1234
+    ip=localhost
+server:
+    max_clients=2
+client:
+    max_response_time=1
+
