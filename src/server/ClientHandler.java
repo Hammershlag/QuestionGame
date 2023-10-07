@@ -29,14 +29,15 @@ public final class ClientHandler implements Runnable {
                             clientSocket.getInputStream()));
 
             String line;
-            while ((line = in.readLine()) != null) {
 
-                // writing the received message from
-                // client
-                System.out.printf(
-                        " Sent from the client: %s\n",
-                        line);
-                out.println(line);
+
+
+            while ((line = in.readLine())!= null) {
+                MessageHandler message = new MessageHandler(line, clientSocket.getInetAddress().getHostAddress() + ":" + clientSocket.getPort(), "server", String.valueOf(System.currentTimeMillis()));
+
+                // writing the received message from client
+                System.out.printf(message.toString());
+                out.println(message.getMessage());
             }
         } catch (IOException e) {
             e.printStackTrace();
