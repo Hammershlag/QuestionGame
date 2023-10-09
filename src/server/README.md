@@ -8,6 +8,6 @@
 
 # Server side messages
 
-| Message                                                                                 | Explanation                             |
-|-----------------------------------------------------------------------------------------|-----------------------------------------|
-| `newClient:os:macAddress:ipAddress:batteryPercentage:manufacturer:modelNumber:username` | Getting Client info on first connection |
+| Message                                                                                                  | Explanation                             |
+|----------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| `newClient:os:macAddress:ipAddress:port:##batteryPercentage:manufacturer:modelNumber##:username:message` | Getting Client info on first connection |

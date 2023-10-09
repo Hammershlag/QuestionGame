@@ -4,8 +4,10 @@ import config.ConfigHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
@@ -39,8 +41,9 @@ public class Server {
         ServerSocket server = null;
 
         try {
-            server = new ServerSocket(port);
+            server = new ServerSocket();
             server.setReuseAddress(true);
+            server.bind(new InetSocketAddress(ip, port));
 
             // Create a separate thread for pinging clients
             Thread pingThread = new Thread(this::pingClientsInBackground);

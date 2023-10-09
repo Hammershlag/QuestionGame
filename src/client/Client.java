@@ -3,7 +3,7 @@ package client;
 import config.ConfigHandler;
 
 import java.io.*;
-import java.net.Socket;
+import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -131,7 +131,32 @@ public class Client {
         }
     }
 
+    private String getMAC() {
+        InetAddress localHost = null;
+        String[] hexadecimal = null;
+        try {
+            localHost = InetAddress.getLocalHost();
+            NetworkInterface ni = NetworkInterface.getByInetAddress(localHost);
+            byte[] hardwareAddress = ni.getHardwareAddress();
+            hexadecimal = new String[hardwareAddress.length];
+            for (int i = 0; i < hardwareAddress.length; i++) {
+                hexadecimal[i] = String.format("%02X", hardwareAddress[i]);
+            }
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+
+        String macAddress = String.join("-", hexadecimal);
+        return macAddress;
+    }
+
+
     private void createAndSendClient(String message) {
+        String os = System.getProperty("os.name");
+        String username = "unll";
+        String ms = "newClient:" + os + ":" + getMAC() + ":" + ip + ":" + port + ":" + username + ":" + message;
         // Try to connect to the server n times
         for (int i = 0; i < connectionTries; i++) {
             try {
@@ -139,7 +164,7 @@ public class Client {
                 Socket socket = new Socket(ip, port);
 
                 // Send the message from the new client
-                sendMessage(socket, message);
+                sendMessage(socket, ms);
 
                 // Wait for the server response
                 String response = receiveMessage(socket);
