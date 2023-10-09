@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Client {
-    private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.txt";
+    private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
 
     private int port;
     private String ip;

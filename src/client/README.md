@@ -9,3 +9,7 @@
 | `all:exit`             | Send an exit message to the server from all clients, closing all connections.                       |
 | `exit`                 | Exit program after closing all clients                                                              |
 | `clear`                | Clears terminal                                                                                     |
+
+
+Send client info on first connection
+message: `newClient:os:macAddress:ipAddress:batteryPercentage:manufacturer:modelNumber:username`
