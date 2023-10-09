@@ -1,6 +1,6 @@
 all:
     port=1234
-    ip=192.168.0.94#localhost
+    ip=192.168.0.94 # localhost
 server:
     max_clients=5
     ping_interval=500 # milliseconds

@@ -39,8 +39,9 @@ public class ClientHandler implements Runnable {
                 } else {
                     // Writing the received message from the client
                     System.out.printf("Received from %s: %s%n", clientKey, line);
-
-                    out.println("Server received: " + line);
+                    MessageProcessor messageProcessor = new MessageProcessor();
+                    String outMessage = messageProcessor.processMessage(line);
+                    out.println(outMessage);
                     out.flush();
                 }
             }
