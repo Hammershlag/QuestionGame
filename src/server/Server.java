@@ -25,7 +25,7 @@ public class Server {
 
     public Server(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
-        this.ip = configHandler.getString("ip");
+        this.ip = configHandler.getBoolean("outgoing") ? configHandler.getString("ip") : configHandler.getString("iploc");
         this.maxClients = configHandler.getInt("max_clients");
         this.clients = new ConcurrentHashMap<>();
         this.pingInterval = configHandler.getInt("ping_interval"); // in milliseconds
@@ -36,6 +36,7 @@ public class Server {
     public void startServer() {
         System.out.println("Server started on: " + ip + ":" + port);
         System.out.println("Max Clients: " + maxClients);
+        System.out.println("Ping Interval: " + pingInterval);
 
         ExecutorService executorService = Executors.newFixedThreadPool(maxClients);
         ServerSocket server = null;
@@ -217,8 +218,40 @@ public class Server {
         }
     }
 
+    public static String[][] checkArgs(String[] args, ConfigHandler configHandler) {
+        String[][] newArgs = new String[args.length][2];
+        for(int i = 0; i < args.length; i++) {
+            newArgs[i][0] = args[i];
+            newArgs[i][1] = "";
+        }
+        for(int i = 0; i < args.length; i += 2) {
+            if(args[i].equals("--help") || args[i].equals("-h")) {
+                //Redirect to help
+                System.out.println("Help");
+                break;
+            } else if(args[i].equals("--port") || args[i].equals("-p")) {
+                configHandler.overridePropertiy("port", args[i + 1]);
+            } else if(args[i].equals("--max-clients") || args[i].equals("-c")) {
+                configHandler.overridePropertiy("max_clients", args[i + 1]);
+            } else if(args[i].equals("--ping-interval") || args[i].equals("-i")) {
+                configHandler.overridePropertiy("ping_interval", args[i + 1]);
+            } else if(args[i].equals("--outgoing") || args[i].equals("-o")) {
+                configHandler.overridePropertiy("outgoing", args[i + 1]);
+            } else {
+                System.out.println("Unknown argument: " + args[i]);
+            }
+        }
+        return newArgs;
+    }
+
     public static void main(String[] args) {
+
         ConfigHandler configHandler = new ConfigHandler(configPath, Server.class);
+
+        //Check for args
+        checkArgs(args, configHandler);
+
+        //Initialize server
         Server server = new Server(configHandler);
         server.startServer();
     }

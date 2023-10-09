@@ -74,5 +74,15 @@ public class ConfigHandler {
     public double getDouble(String key) {
         return Double.parseDouble(properties.get(clazz.getSimpleName().toLowerCase() + "." + key));
     }
+
+    public void overridePropertiy(String key, String value) {
+        properties.put(clazz.getSimpleName().toLowerCase() + "." + key, value);
+    }
+
+    public void overrideProperties(String[][] args) {
+        for(String[] arg : args) {
+            overridePropertiy(arg[0], arg[1]);
+        }
+    }
 }
 
