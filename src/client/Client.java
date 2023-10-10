@@ -7,6 +7,8 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static help.ConsoleListener.startConsoleListener;
+import static help.ConsoleListener.stopConsoleListener;
 import static help.HelpPrint.printHelp;
 
 public class Client {
@@ -54,6 +56,7 @@ public class Client {
                     // Exit the program after closing all clients
                     closeAllClients();
                     messageReceiverExecutor.shutdownNow();
+                    stopConsoleListener();
                     System.exit(0);
                     break;
                 } else if ("all:exit".equalsIgnoreCase(line)) {
@@ -283,6 +286,12 @@ public class Client {
                 configHandler.overridePropertiy("first_client_index", args[i + 1]);
             } else if(args[i].equals("--connection_tries") || args[i].equals("-r")) {
                 configHandler.overridePropertiy("connection_tries", args[i + 1]);
+            } else if(args[i].equals("--log-file") || args[i].equals("-l")) {
+                configHandler.overridePropertiy("log_file", args[i + 1]);
+            } else if(args[i].equals("--max-log-files") || args[i].equals("-m")) {
+                configHandler.overridePropertiy("max_log_files", args[i + 1]);
+            } else if(args[i].equals("--log-file-dir") || args[i].equals("-d")) {
+                configHandler.overridePropertiy("log_file_dir", args[i + 1]);
             } else {
                 System.out.println("Unknown argument: " + args[i]);
             }
@@ -294,8 +303,12 @@ public class Client {
 
         checkArgs(args, configHandler);
 
+        startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
+
         Client client = new Client(configHandler);
         client.startClient();
+
+        stopConsoleListener();
     }
 }
 

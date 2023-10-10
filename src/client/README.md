@@ -24,3 +24,6 @@
 | `--max-response-time` , `-t`  | Sets max response time from server after which Client will determine Server unreachable (default: 1s, in seconds) |
 | `--first-client-index` , `-c` | Index of the first newly created client (default: 1)                                                              |
 | `--connection_tries` , `-r`   | Sets number of tries to connect to server before giving up (default: 10)                                          |
+| `--log-file` , `-l`     | Sets the file to log console output to (default: serverConsole)                |
+| `--max-log-files` , `-m`| Sets the maximum number of log files to keep (default: 5)                      |
+| `--log-file-dir` , `-d` | Sets the directory to store log files in (default: ./logs/)                    |

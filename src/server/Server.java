@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
+import static help.ConsoleListener.startConsoleListener;
+import static help.ConsoleListener.stopConsoleListener;
 import static help.HelpPrint.printHelp;
 
 public class Server {
@@ -105,6 +107,7 @@ public class Server {
             if ("exit".equalsIgnoreCase(input)) {
                 // Handle 'exit' command
                 closeAllClientConnections();
+                stopConsoleListener();
                 System.exit(0); // Exit the server
             } else if ("ping".equalsIgnoreCase(input)) {
                 // Handle the "ping" command to ping all client connections
@@ -232,9 +235,16 @@ public class Server {
                 configHandler.overridePropertiy("ping_interval", args[i + 1]);
             } else if(args[i].equals("--outgoing") || args[i].equals("-o")) {
                 configHandler.overridePropertiy("outgoing", args[i + 1]);
+            } else if(args[i].equals("--log-file") || args[i].equals("-l")) {
+                configHandler.overridePropertiy("log_file", args[i + 1]);
+            } else if(args[i].equals("--max-log-files") || args[i].equals("-m")) {
+                configHandler.overridePropertiy("max_log_files", args[i + 1]);
+            } else if(args[i].equals("--log-file-dir") || args[i].equals("-d")) {
+                configHandler.overridePropertiy("log_file_dir", args[i + 1]);
             } else {
                 System.out.println("Unknown argument: " + args[i]);
             }
+
         }
     }
 
@@ -245,8 +255,12 @@ public class Server {
         //Check for args
         checkArgs(args, configHandler);
 
+        startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
+
         //Initialize server
         Server server = new Server(configHandler);
         server.startServer();
+
+        stopConsoleListener();
     }
 }

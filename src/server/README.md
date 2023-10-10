@@ -21,3 +21,6 @@
 | `--outgoing` , `-o`     | If true, the server will listen for outgoing connections (default: false)      |
 | `--max-clients` , `-c`  | Sets the maximum amount of clients that can connect to the server (default: 5) |
 | `--ping-interval` , `-i` | Sets the interval between pings (default: 500, minimum: 100) - measured in ms  |
+| `--log-file` , `-l`     | Sets the file to log console output to (default: serverConsole)                |
+| `--max-log-files` , `-m`| Sets the maximum number of log files to keep (default: 5)                      |
+| `--log-file-dir` , `-d` | Sets the directory to store log files in (default: ./logs/)                    |
