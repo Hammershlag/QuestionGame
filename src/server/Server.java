@@ -7,13 +7,12 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-import static server.HelpPrint.printHelp;
+import static help.HelpPrint.printHelp;
 
 public class Server {
     private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
@@ -223,7 +222,7 @@ public class Server {
     public static void checkArgs(String[] args, ConfigHandler configHandler) {
         for(int i = 0; i < args.length; i += 2) {
             if(args[i].equals("--help") || args[i].equals("-h")) {
-                printHelp(); //Print README.md as help
+                printHelp("C:\\Projects\\TestGame\\TestGameServer\\src\\server\\README.md"); //Print README.md as help
                 System.exit(0);
             } else if(args[i].equals("--port") || args[i].equals("-p")) {
                 configHandler.overridePropertiy("port", args[i + 1]);

@@ -7,6 +7,8 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static help.HelpPrint.printHelp;
+
 public class Client {
     private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
 
@@ -270,8 +272,28 @@ public class Client {
         clients.clear();
     }
 
+    public static void checkArgs(String[] args, ConfigHandler configHandler) {
+        for(int i = 0; i < args.length; i += 2) {
+            if(args[i].equals("--help") || args[i].equals("-h")) {
+                printHelp("C:\\Projects\\TestGame\\TestGameServer\\src\\client\\README.md"); //Print README.md as help
+                System.exit(0);
+            }else if(args[i].equals("--max-response-time") || args[i].equals("-t")) {
+                configHandler.overridePropertiy("max_response_time", args[i + 1]);
+            } else if(args[i].equals("--first-client-index") || args[i].equals("-c")) {
+                configHandler.overridePropertiy("first_client_index", args[i + 1]);
+            } else if(args[i].equals("--connection_tries") || args[i].equals("-r")) {
+                configHandler.overridePropertiy("connection_tries", args[i + 1]);
+            } else {
+                System.out.println("Unknown argument: " + args[i]);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         ConfigHandler configHandler = new ConfigHandler(configPath, Client.class);
+
+        checkArgs(args, configHandler);
+
         Client client = new Client(configHandler);
         client.startClient();
     }

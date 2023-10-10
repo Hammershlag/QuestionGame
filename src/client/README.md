@@ -10,6 +10,17 @@
 | `exit`                 | Exit program after closing all clients                                                              |
 | `clear`                | Clears terminal                                                                                     |
 
+# Client side messages
 
-Send client info on first connection
-message: `newClient:os:macAddress:ipAddress:batteryPercentage:manufacturer:modelNumber:username`
+| Message                                                                                                  | Explanation                       |
+|----------------------------------------------------------------------------------------------------------|-----------------------------------|
+| `newClient:os:macAddress:ipAddress:port:##batteryPercentage:manufacturer:modelNumber##:username:message` | Sending Client info on connection |
+
+# Initialisation arguments
+
+| Argument                      | Explanation                                                                                                       |
+|-------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `--help` , `-h`               | Shows help page                                                                                                   |
+| `--max-response-time` , `-t`  | Sets max response time from server after which Client will determine Server unreachable (default: 1s, in seconds) |
+| `--first-client-index` , `-c` | Index of the first newly created client (default: 1)                                                              |
+| `--connection_tries` , `-r`   | Sets number of tries to connect to server before giving up (default: 10)                                          |
