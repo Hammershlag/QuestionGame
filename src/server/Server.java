@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
+import static server.HelpPrint.printHelp;
+
 public class Server {
     private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
     private int port;
@@ -218,17 +220,11 @@ public class Server {
         }
     }
 
-    public static String[][] checkArgs(String[] args, ConfigHandler configHandler) {
-        String[][] newArgs = new String[args.length][2];
-        for(int i = 0; i < args.length; i++) {
-            newArgs[i][0] = args[i];
-            newArgs[i][1] = "";
-        }
+    public static void checkArgs(String[] args, ConfigHandler configHandler) {
         for(int i = 0; i < args.length; i += 2) {
             if(args[i].equals("--help") || args[i].equals("-h")) {
-                //Redirect to help
-                System.out.println("Help");
-                break;
+                printHelp(); //Print README.md as help
+                System.exit(0);
             } else if(args[i].equals("--port") || args[i].equals("-p")) {
                 configHandler.overridePropertiy("port", args[i + 1]);
             } else if(args[i].equals("--max-clients") || args[i].equals("-c")) {
@@ -241,7 +237,6 @@ public class Server {
                 System.out.println("Unknown argument: " + args[i]);
             }
         }
-        return newArgs;
     }
 
     public static void main(String[] args) {
