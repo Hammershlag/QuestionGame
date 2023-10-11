@@ -1,6 +1,7 @@
 package server;
 
 import config.ConfigHandler;
+import server.database.userDatabase.UserDatabaseHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +26,8 @@ public class Server {
     private int pingInterval;
     private int minPingInterval;
     private long lastPingTime;
+
+    private static UserDatabaseHandler userDatabaseHandler;
 
     public Server(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
@@ -70,7 +73,7 @@ public class Server {
                     System.out.println("New client connected " + clientKey);
 
                     // Create a new thread to handle the client
-                    ClientHandler clientHandler = new ClientHandler(client, clients);
+                    ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler);
                     executorService.execute(clientHandler);
                 } else {
                     // Handle messages from existing clients but do not accept new connections
@@ -78,7 +81,7 @@ public class Server {
                     String clientKey = getClientKey(client);
                     if (clients.containsKey(clientKey)) {
                         // Create a new thread to handle the client
-                        ClientHandler clientHandler = new ClientHandler(client, clients);
+                        ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler);
                         executorService.execute(clientHandler);
                     } else {
                         // Close the socket for new clients trying to connect
@@ -241,7 +244,9 @@ public class Server {
                 configHandler.overridePropertiy("max_log_files", args[i + 1]);
             } else if(args[i].equals("--log-file-dir") || args[i].equals("-d")) {
                 configHandler.overridePropertiy("log_file_dir", args[i + 1]);
-            } else {
+            } else if(args[i].equals("--user-database-dir") || args[i].equals("-u")){
+                configHandler.overridePropertiy("user_database_file", args[i + 1]);
+            }else {
                 System.out.println("Unknown argument: " + args[i]);
             }
 
@@ -256,6 +261,9 @@ public class Server {
         checkArgs(args, configHandler);
 
         startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
+
+        //Initialize user database
+        userDatabaseHandler = new UserDatabaseHandler(configHandler.getString("user_database_dir"));
 
         //Initialize server
         Server server = new Server(configHandler);

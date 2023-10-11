@@ -11,10 +11,12 @@
 | `clear`                | Clears terminal                                                                                     |
 
 # Client side messages
+All Client side messages should be sent in the following format: clientNumber:message
 
-| Message                                                                                                  | Explanation                       |
-|----------------------------------------------------------------------------------------------------------|-----------------------------------|
-| `newClient:os:macAddress:ipAddress:port:##batteryPercentage:manufacturer:modelNumber##:username:message` | Sending Client info on connection |
+| Message                                                                                                  | Explanation                                |
+|----------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `newClient:os:macAddress:ipAddress:port:##batteryPercentage:manufacturer:modelNumber##:username:message` | Sending Client info on connection          |
+| `newUser:username:password`                                                                              | Sending new user to add to server database |
 
 # Initialisation arguments
 

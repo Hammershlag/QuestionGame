@@ -1,5 +1,7 @@
 package server;
 
+import server.database.userDatabase.UserDatabaseHandler;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,9 +13,12 @@ public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private final ConcurrentHashMap<String, Socket> clients;
 
-    public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients) {
+    private UserDatabaseHandler userDatabaseHandler;
+
+    public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients, UserDatabaseHandler userDatabaseHandler) {
         this.clientSocket = socket;
         this.clients = clients;
+        this.userDatabaseHandler = userDatabaseHandler;
     }
 
     @Override
@@ -39,7 +44,7 @@ public class ClientHandler implements Runnable {
                 } else {
                     // Writing the received message from the client
                     System.out.printf("Received from %s: %s%n", clientKey, line);
-                    MessageProcessor messageProcessor = new MessageProcessor();
+                    MessageProcessor messageProcessor = new MessageProcessor(userDatabaseHandler);
                     String outMessage = messageProcessor.processMessage(line);
                     out.println(outMessage);
                     out.flush();
