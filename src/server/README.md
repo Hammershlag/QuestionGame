@@ -22,17 +22,18 @@
 
 # Initialisation arguments
 
-| Argument                     | Explanation                                                                                       |
-|------------------------------|---------------------------------------------------------------------------------------------------|
-| `--help` , `-h`              | Shows help page                                                                                   |
-| `--port` , `-p`              | Sets the port to listen on (default: 1337)                                                        |
-| `--outgoing` , `-o`          | If true, the server will listen for outgoing connections (default: false)                         |
-| `--max-clients` , `-c`       | Sets the maximum amount of clients that can connect to the server (default: 5)                    |
-| `--ping-interval` , `-i`     | Sets the interval between pings (default: 500, minimum: 100) - measured in ms                     |
-| `--log-file` , `-l`          | Sets the file to log console output to (default: serverConsole)                                   |
-| `--max-log-files` , `-m`     | Sets the maximum number of log files to keep (default: 5)                                         |
-| `--log-file-dir` , `-d`      | Sets the directory to store log files in (default: ./logs/)                                       |
-| `--user-database-dir` , `-u` | Sets the directory to store users in - user Database (default: ./database/userDatabase/users.txt) |
+| Argument                         | Explanation                                                                                                       |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `--help` , `-h`                  | Shows help page                                                                                                   |
+| `--port` , `-p`                  | Sets the port to listen on (default: 1337)                                                                        |
+| `--outgoing` , `-o`              | If true, the server will listen for outgoing connections (default: false)                                         |
+| `--max-clients` , `-c`           | Sets the maximum amount of clients that can connect to the server (default: 5)                                    |
+| `--ping-interval` , `-i`         | Sets the interval between pings (default: 500, minimum: 100) - measured in ms                                     |
+| `--log-file` , `-l`              | Sets the file to log console output to (default: serverConsole)                                                   |
+| `--max-log-files` , `-m`         | Sets the maximum number of log files to keep (default: 5)                                                         |
+| `--log-file-dir` , `-d`          | Sets the directory to store log files in (default: ./logs/)                                                       |
+| `--user-database-dir` , `-u`     | Sets the directory to store users in - user Database (default: ./database/userDatabase/users.txt)                 |
+| `--question-database-dir` , `-q` | Sets the directory to store questions in - question Database (default: ./database/questionDatabase/questions.txt) |
 
 # Users database (users.txt)
 - Change database/userDatabase/users.txt to actual users database
