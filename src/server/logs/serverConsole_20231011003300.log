@@ -1,0 +1,23 @@
+Server started on: 192.168.0.94:1337
+Max Clients: 5
+Ping Interval: 500
+New client connected 192.168.0.94:59810
+Received from 192.168.0.94:59810: newClient:Windows 11:FC-34-97-01-A6-79:192.168.0.94:1337:unll::1
+New client connected Windows 11
+New client connected 192.168.0.94:59820
+Received from 192.168.0.94:59820: newClient:Windows 11:FC-34-97-01-A6-79:192.168.0.94:1337:unll:12121
+New client connected Windows 11
+New client connected 192.168.0.94:59821
+Received from 192.168.0.94:59821: newClient:Windows 11:FC-34-97-01-A6-79:192.168.0.94:1337:unll:12121
+New client connected Windows 11
+New client connected 192.168.0.94:59823
+Received from 192.168.0.94:59823: newClient:Windows 11:FC-34-97-01-A6-79:192.168.0.94:1337:unll:12121
+New client connected Windows 11
+Client 192.168.0.94:59810 exited.
+Client 192.168.0.94:59820 exited.
+Client 192.168.0.94:59821 exited.
+Client 192.168.0.94:59823 exited.
+New client connected 192.168.0.94:59894
+Received from 192.168.0.94:59894: newClient:Windows 11:FC-34-97-01-A6-79:192.168.0.94:1337:unll:1
+New client connected Windows 11
+Connection with client 192.168.0.94:59894 closed.

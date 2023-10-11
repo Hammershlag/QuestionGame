@@ -1,0 +1,12 @@
+Client started on: 192.168.0.94:1337
+All the commands are available in the README.md file
+
+Enter a command: 
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: New client connected Windows 11
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Server replied: null
+Client 1 closed.

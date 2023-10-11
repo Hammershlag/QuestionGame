@@ -1,0 +1,52 @@
+Client started on: 192.168.0.94:1337
+All the commands are available in the README.md file
+
+Enter a command: 
+Server replied: New client connected Windows 11
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Client 1 received: Message processed
+Server replied: Ping
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Server replied: New client connected Windows 11
+Server replied: New client connected Windows 11
+Server replied: New client connected Windows 11
+Server replied: New client connected Windows 11
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Server replied: null
+Server did not respond. Client creation failed.
+Number of connected clients: 5 [1, 2, 3, 4, 5]
+
+Enter a command: 
+Server replied: null
+Client 1 closed.
+Server replied: null
+Client 2 closed.
+Server replied: null
+Client 3 closed.
+Server replied: null
+Client 4 closed.
+Server replied: null
+Client 5 closed.
+Number of connected clients: 0 
+Enter a command: 
