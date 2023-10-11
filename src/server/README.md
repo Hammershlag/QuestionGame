@@ -15,6 +15,10 @@
 | `getUser:id:ACTUALID`                                                                                    | Getting user from database by id, where ACTUALID is id (users.txt)                   |
 | `getUser:username:ACTUALUSERNAME`                                                                        | Getting user from database by username, where ACTUALUSERNAME is username (users.txt) |
 | `login:username:password`                                                                                | Getting user to login from database (users.txt)                                      |
+| `getQuestion:id:ACTUALID`                                                                                | actualGetting question from database by id (questions.txt)                           |
+| `getQuestion:random`                                                                                     | Getting random question from database (questions.txt)                                |
+| `addQuestion:type:question:correct_answer:answer;answer;answer:...`                                      | Getting new question to add to database (questions.txt)                              |
+| `answerQuestion:id:ACTUALID:answer` (yet to be implemented)                                              | Getting answer to question from database by id (questions.txt)                       |
 
 # Initialisation arguments
 
@@ -34,3 +38,8 @@
 - Change database/userDatabase/users.txt to actual users database
 - Users passwords should be hashed and never stored in plain text
 - Format: `id:username:password`
+
+# Questions database (questions.txt)
+- Change database/questionsDatabase/questions.txt to actual questions database
+- Format: `id:type:question:correct_answer:answer;answer;answer;...` - infinitely many answers supported
+- `correct_answer` should be one of the answers, is taken into consideration only when question is of type `0`, not if `1`

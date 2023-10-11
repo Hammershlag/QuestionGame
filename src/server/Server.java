@@ -1,6 +1,7 @@
 package server;
 
 import config.ConfigHandler;
+import server.database.questionDatabase.QuestionDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class Server {
     private long lastPingTime;
 
     private static UserDatabaseHandler userDatabaseHandler;
+    private static QuestionDatabaseHandler questionDatabaseHandler;
 
     public Server(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
@@ -73,7 +75,7 @@ public class Server {
                     System.out.println("New client connected " + clientKey);
 
                     // Create a new thread to handle the client
-                    ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler);
+                    ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler, questionDatabaseHandler);
                     executorService.execute(clientHandler);
                 } else {
                     // Handle messages from existing clients but do not accept new connections
@@ -81,7 +83,7 @@ public class Server {
                     String clientKey = getClientKey(client);
                     if (clients.containsKey(clientKey)) {
                         // Create a new thread to handle the client
-                        ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler);
+                        ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler, questionDatabaseHandler);
                         executorService.execute(clientHandler);
                     } else {
                         // Close the socket for new clients trying to connect
@@ -246,10 +248,11 @@ public class Server {
                 configHandler.overridePropertiy("log_file_dir", args[i + 1]);
             } else if(args[i].equals("--user-database-dir") || args[i].equals("-u")){
                 configHandler.overridePropertiy("user_database_file", args[i + 1]);
-            }else {
+            } else if(args[i].equals("--question-database-dir") || args[i].equals("-q")){
+                configHandler.overridePropertiy("question_database_dir", args[i + 1]);
+            } else {
                 System.out.println("Unknown argument: " + args[i]);
             }
-
         }
     }
 
@@ -264,6 +267,7 @@ public class Server {
 
         //Initialize user database
         userDatabaseHandler = new UserDatabaseHandler(configHandler.getString("user_database_dir"));
+        questionDatabaseHandler = new QuestionDatabaseHandler(configHandler.getString("question_database_dir"));
 
         //Initialize server
         Server server = new Server(configHandler);

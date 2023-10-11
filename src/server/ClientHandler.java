@@ -1,5 +1,6 @@
 package server;
 
+import server.database.questionDatabase.QuestionDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
 import java.io.BufferedReader;
@@ -14,11 +15,13 @@ public class ClientHandler implements Runnable {
     private final ConcurrentHashMap<String, Socket> clients;
 
     private UserDatabaseHandler userDatabaseHandler;
+    private QuestionDatabaseHandler questionDatabaseHandler;
 
-    public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients, UserDatabaseHandler userDatabaseHandler) {
+    public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients, UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler) {
         this.clientSocket = socket;
         this.clients = clients;
         this.userDatabaseHandler = userDatabaseHandler;
+        this.questionDatabaseHandler = questionDatabaseHandler;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class ClientHandler implements Runnable {
                 } else {
                     // Writing the received message from the client
                     System.out.printf("Received from %s: %s%n", clientKey, line);
-                    MessageProcessor messageProcessor = new MessageProcessor(userDatabaseHandler);
+                    MessageProcessor messageProcessor = new MessageProcessor(userDatabaseHandler, questionDatabaseHandler);
                     String outMessage = messageProcessor.processMessage(line);
                     out.println(outMessage);
                     out.flush();

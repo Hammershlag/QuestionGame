@@ -1,0 +1,8 @@
+0:0:question:correct_answer:answer1;answer2;answer3
+1:0:What is 2 + 2?:4:3;4;5
+2:0:What is capital of France?:Paris:Paris;London;Berlin;Warsaw
+3:0:Which planet is known as the Red Planet?:Mars:Mars;Venus;Earth;Sun;Jupiter
+4:0:What is the largest mammal in the world?:Blue Whale:Blue Whale;Elephant;Giraffe
+5:0:Who wrote the play 'Romeo and Juliet'?:William Shakespeare:William Shakespeare;Charles Dickens;Jane Austen
+6:0:What animal barks?:Dog:Cat;Dog;Lizard
+7:0:What is the capital of Australia?:Canberra:Canberra;Sydney;Melbourne;Brisbane;Perth;Adelaide
