@@ -42,4 +42,8 @@ public class Question {
     public String toString() {
         return "Question [id=" + id + ", type=" + type + ", correct_answer=" + correct_answer + ", question=" + question + ", answers=" + answers + "]";
     }
+
+    public boolean compareAnswer(String answer) {
+        return correct_answer.equals(answer);
+    }
 }

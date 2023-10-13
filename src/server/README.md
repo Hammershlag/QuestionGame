@@ -18,14 +18,14 @@
 | `getQuestion:id:ACTUALID`                                                                                | actualGetting question from database by id (questions.txt)                           |
 | `getQuestion:random`                                                                                     | Getting random question from database (questions.txt)                                |
 | `addQuestion:type:question:correct_answer:answer;answer;answer:...`                                      | Getting new question to add to database (questions.txt)                              |
-| `answerQuestion:id:ACTUALID:answer` (yet to be implemented)                                              | Getting answer to question from database by id (questions.txt)                       |
+| `answerQuestion:id:ACTUALID:answer:userId` (yet to be implemented)                                       | Getting answer to question from database by id (questions.txt)                       |
 
 # Initialisation arguments
 
 | Argument                         | Explanation                                                                                                       |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------|
 | `--help` , `-h`                  | Shows help page                                                                                                   |
-| `--port` , `-p`                  | Sets the port to listen on (default: 1337)                                                                        |
+| `--port` , `-p`                  | Sets the port to listen on (default: 1234)                                                                        |
 | `--outgoing` , `-o`              | If true, the server will listen for outgoing connections (default: false)                                         |
 | `--max-clients` , `-c`           | Sets the maximum amount of clients that can connect to the server (default: 5)                                    |
 | `--ping-interval` , `-i`         | Sets the interval between pings (default: 500, minimum: 100) - measured in ms                                     |

@@ -30,6 +30,7 @@ public class Server {
 
     private static UserDatabaseHandler userDatabaseHandler;
     private static QuestionDatabaseHandler questionDatabaseHandler;
+    private static ConfigHandler configHandler;
 
     public Server(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
@@ -50,9 +51,13 @@ public class Server {
         ServerSocket server = null;
 
         try {
-            server = new ServerSocket();
+            if(!configHandler.getBoolean("outgoing"))
+                server = new ServerSocket(port); //TODO ?????
+            else {
+                server = new ServerSocket();
+                server.bind(new InetSocketAddress(ip, port));
+            }
             server.setReuseAddress(true);
-            server.bind(new InetSocketAddress(ip, port));
 
             // Create a separate thread for pinging clients
             Thread pingThread = new Thread(this::pingClientsInBackground);
@@ -258,7 +263,7 @@ public class Server {
 
     public static void main(String[] args) {
 
-        ConfigHandler configHandler = new ConfigHandler(configPath, Server.class);
+         configHandler = new ConfigHandler(configPath, Server.class);
 
         //Check for args
         checkArgs(args, configHandler);
