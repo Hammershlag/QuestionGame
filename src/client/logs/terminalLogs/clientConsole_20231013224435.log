@@ -1,0 +1,28 @@
+Client started on: 192.168.0.94:1234
+All the commands are available in the README.md file
+
+Enter a command: 
+Server replied: New client connected Windows 11
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Client 1 received: User added successfully
+Server replied: Ping
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Client 1 received: Question [id=3, type=0, correct_answer=Mars, question=Which planet is known as the Red Planet?, answers=[Mars, Venus, Earth, Sun, Jupiter]]
+Server replied: Ping
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Client 1 received: Correct answer
+Server replied: Ping
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Client 1 received: Question [id=0, type=0, correct_answer=correct_answer, question=question, answers=[answer1, answer2, answer3]]
+Server replied: Ping
+Number of connected clients: 1 [1]
+
+Enter a command: 

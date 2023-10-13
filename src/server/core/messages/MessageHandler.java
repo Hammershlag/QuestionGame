@@ -1,4 +1,4 @@
-package server;
+package server.core.messages;
 
 public class MessageHandler {
 

@@ -1,0 +1,13 @@
+Client started on: 192.168.0.94:1234
+All the commands are available in the README.md file
+
+Enter a command: 
+Server replied: New client connected Windows 11
+Number of connected clients: 1 [1]
+
+Enter a command: 
+Client 1 received: Question [id=7, type=0, correct_answer=Canberra, question=What is the capital of Australia?, answers=[Canberra, Sydney, Melbourne, Brisbane, Perth, Adelaide]]
+Server replied: Ping
+Number of connected clients: 1 [1]
+
+Enter a command: 

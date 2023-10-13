@@ -1,4 +1,4 @@
-package server;
+package server.core.messages;
 
 import server.database.questionDatabase.QuestionDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;

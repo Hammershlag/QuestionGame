@@ -1,5 +1,6 @@
-package server;
+package server.core;
 
+import server.core.messages.MessageProcessor;
 import server.database.questionDatabase.QuestionDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 

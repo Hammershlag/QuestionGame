@@ -1,0 +1,9 @@
+Client started on: 192.168.0.94:1234
+All the commands are available in the README.md file
+
+Enter a command: 
+Server replied: New client connected Windows 11
+Number of connected clients: 1 [13]
+
+Enter a command: 
+Client 13 disconnected.

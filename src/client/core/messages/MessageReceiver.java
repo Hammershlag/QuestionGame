@@ -1,4 +1,4 @@
-package client;
+package client.core.messages;
 
 import java.io.BufferedReader;
 import java.io.IOException;

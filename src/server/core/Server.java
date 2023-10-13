@@ -1,4 +1,4 @@
-package server;
+package server.core;
 
 import config.ConfigHandler;
 import server.database.questionDatabase.QuestionDatabaseHandler;
@@ -19,7 +19,7 @@ import static help.ConsoleListener.stopConsoleListener;
 import static help.HelpPrint.printHelp;
 
 public class Server {
-    private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
+    protected static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
     private int port;
     private String ip;
     private int maxClients;
@@ -27,10 +27,9 @@ public class Server {
     private int pingInterval;
     private int minPingInterval;
     private long lastPingTime;
-
-    private static UserDatabaseHandler userDatabaseHandler;
-    private static QuestionDatabaseHandler questionDatabaseHandler;
-    private static ConfigHandler configHandler;
+    protected static UserDatabaseHandler userDatabaseHandler;
+    protected static QuestionDatabaseHandler questionDatabaseHandler;
+    protected static ConfigHandler configHandler;
 
     public Server(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
@@ -42,6 +41,8 @@ public class Server {
         this.lastPingTime = System.currentTimeMillis();
     }
 
+    public Server(){}
+
     public void startServer() {
         System.out.println("Server started on: " + ip + ":" + port);
         System.out.println("Max Clients: " + maxClients);
@@ -52,7 +53,7 @@ public class Server {
 
         try {
             if(!configHandler.getBoolean("outgoing"))
-                server = new ServerSocket(port); //TODO ?????
+                server = new ServerSocket(port);
             else {
                 server = new ServerSocket();
                 server.bind(new InetSocketAddress(ip, port));
@@ -259,25 +260,5 @@ public class Server {
                 System.out.println("Unknown argument: " + args[i]);
             }
         }
-    }
-
-    public static void main(String[] args) {
-
-         configHandler = new ConfigHandler(configPath, Server.class);
-
-        //Check for args
-        checkArgs(args, configHandler);
-
-        startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
-
-        //Initialize user database
-        userDatabaseHandler = new UserDatabaseHandler(configHandler.getString("user_database_dir"));
-        questionDatabaseHandler = new QuestionDatabaseHandler(configHandler.getString("question_database_dir"));
-
-        //Initialize server
-        Server server = new Server(configHandler);
-        server.startServer();
-
-        stopConsoleListener();
     }
 }

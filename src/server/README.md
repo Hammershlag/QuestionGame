@@ -1,4 +1,9 @@
-# Server side commands
+# Server manual
+
+## How to run
+To run Server run main inside ServerMain class
+
+## Server side commands
 
 | Command | Explanation                            |
 |---------|----------------------------------------|
@@ -6,7 +11,7 @@
 | `ping`  | Force ping all existing connections    |
 | `clear` | Clears terminal                        |
 
-# Server side messages
+## Server side messages
 
 | Message                                                                                                  | Explanation                                                                          |
 |----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
@@ -18,9 +23,9 @@
 | `getQuestion:id:ACTUALID`                                                                                | actualGetting question from database by id (questions.txt)                           |
 | `getQuestion:random`                                                                                     | Getting random question from database (questions.txt)                                |
 | `addQuestion:type:question:correct_answer:answer;answer;answer:...`                                      | Getting new question to add to database (questions.txt)                              |
-| `answerQuestion:id:ACTUALID:answer:userId` (yet to be implemented)                                       | Getting answer to question from database by id (questions.txt)                       |
+| `answerQuestion:id:ACTUALID:answer:userId`                                                               | Getting answer to question from database by id (questions.txt)                       |
 
-# Initialisation arguments
+## Initialisation arguments
 
 | Argument                         | Explanation                                                                                                       |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------|
@@ -35,12 +40,12 @@
 | `--user-database-dir` , `-u`     | Sets the directory to store users in - user Database (default: ./database/userDatabase/users.txt)                 |
 | `--question-database-dir` , `-q` | Sets the directory to store questions in - question Database (default: ./database/questionDatabase/questions.txt) |
 
-# Users database (users.txt)
+## Users database (users.txt)
 - Change database/userDatabase/users.txt to actual users database
 - Users passwords should be hashed and never stored in plain text
 - Format: `id:username:password`
 
-# Questions database (questions.txt)
+## Questions database (questions.txt)
 - Change database/questionsDatabase/questions.txt to actual questions database
 - Format: `id:type:question:correct_answer:answer;answer;answer;...` - infinitely many answers supported
 - `correct_answer` should be one of the answers, is taken into consideration only when question is of type `0`, not if `1`

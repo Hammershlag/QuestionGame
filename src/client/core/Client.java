@@ -1,5 +1,6 @@
-package client;
+package client.core;
 
+import client.core.messages.MessageReceiver;
 import config.ConfigHandler;
 
 import java.io.*;
@@ -12,7 +13,7 @@ import static help.ConsoleListener.stopConsoleListener;
 import static help.HelpPrint.printHelp;
 
 public class Client {
-    private static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
+    protected static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
 
     private int port;
     private String ip;
@@ -33,6 +34,8 @@ public class Client {
         this.timer = new Timer();
         this.messageReceiverExecutor = Executors.newCachedThreadPool();
     }
+
+    public Client(){}
 
     public void startClient() {
         System.out.println("Client started on: " + ip + ":" + port);
@@ -296,19 +299,6 @@ public class Client {
                 System.out.println("Unknown argument: " + args[i]);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        ConfigHandler configHandler = new ConfigHandler(configPath, Client.class);
-
-        checkArgs(args, configHandler);
-
-        startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
-
-        Client client = new Client(configHandler);
-        client.startClient();
-
-        stopConsoleListener();
     }
 }
 
