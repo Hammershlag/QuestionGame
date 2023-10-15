@@ -3,24 +3,53 @@ package server.core.messages;
 import server.database.questionDatabase.QuestionDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
+/**
+ * The `MessageProcessor` class is responsible for processing incoming messages and executing various server tasks based on message content.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
 public class MessageProcessor {
-
-    private UserDatabaseHandler userDatabaseHandler;
+    /**
+     * The handler for user database operations.
+     */
+    private final UserDatabaseHandler userDatabaseHandler;
+    /**
+     * The handler for question database operations.
+     */
     private static QuestionDatabaseHandler questionDatabaseHandler;
 
+    /**
+     * Constructs a `MessageProcessor` with the specified user database handler and question database handler.
+     *
+     * @param userDatabaseHandler    The handler for user database operations.
+     * @param questionDatabaseHandler The handler for question database operations.
+     */
     public MessageProcessor(UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler) {
         this.userDatabaseHandler = userDatabaseHandler;
-        this.questionDatabaseHandler = questionDatabaseHandler;
+        MessageProcessor.questionDatabaseHandler = questionDatabaseHandler;
     }
 
+    /**
+     * Pre-processes an incoming message by splitting it into parts.
+     *
+     * @param message The incoming message to be pre-processed.
+     * @return An array of message parts after pre-processing.
+     */
     private String[] preProcessMessage(String message) {
         String[] messageParts = message.split(":");
         return messageParts;
     }
 
+    /**
+     * Processes an incoming message and performs appropriate actions based on the message content.
+     *
+     * @param message The incoming message to be processed.
+     * @return A response message based on the processing result.
+     */
     public String processMessage(String message) {
         String[] preProcessedMessage = preProcessMessage(message);
-        switch (preProcessedMessage[0]){
+        switch (preProcessedMessage[0]) {
             case "newClient": {
                 System.out.println("New client connected " + preProcessedMessage[1]);
                 return "New client connected " + preProcessedMessage[1];
@@ -39,7 +68,6 @@ public class MessageProcessor {
                     } else {
                         return "bad_request";
                     }
-
                 } else {
                     return "bad_request";
                 }
@@ -90,5 +118,4 @@ public class MessageProcessor {
                 return "bad_message";
         }
     }
-
 }

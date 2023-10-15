@@ -6,17 +6,39 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The `ConfigHandler` class is responsible for managing configuration properties loaded from a file.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
 public class ConfigHandler {
-    private Map<String, String> properties;
+    /**
+     * The map of configuration properties.
+     */
+    private final Map<String, String> properties;
+    /**
+     * The class for which the configuration properties are intended.
+     */
+    private final Class<?> clazz;
 
-    private Class<?> clazz;
-
+    /**
+     * Constructs a new `ConfigHandler` instance and loads configuration properties from a specified file.
+     *
+     * @param configFile The path to the configuration file.
+     * @param clazz      The class for which the configuration properties are intended.
+     */
     public ConfigHandler(String configFile, Class<?> clazz) {
         properties = new HashMap<>();
         this.clazz = clazz;
         loadConfig(configFile);
     }
 
+    /**
+     * Loads configuration properties from the specified configuration file.
+     *
+     * @param configFile The path to the configuration file to be loaded.
+     */
     private void loadConfig(String configFile) {
         try (BufferedReader br = new BufferedReader(new FileReader(configFile))) {
             String line;
@@ -59,30 +81,53 @@ public class ConfigHandler {
         }
     }
 
+    /**
+     * Get an integer configuration value for the specified key.
+     *
+     * @param key The key for the configuration property.
+     * @return The integer value associated with the key.
+     */
     public int getInt(String key) {
         return Integer.parseInt(properties.get(clazz.getSimpleName().toLowerCase() + "." + key));
     }
 
+    /**
+     * Get a string configuration value for the specified key.
+     *
+     * @param key The key for the configuration property.
+     * @return The string value associated with the key.
+     */
     public String getString(String key) {
         return properties.get(clazz.getSimpleName().toLowerCase() + "." + key);
     }
 
+    /**
+     * Get a boolean configuration value for the specified key.
+     *
+     * @param key The key for the configuration property.
+     * @return The boolean value associated with the key.
+     */
     public boolean getBoolean(String key) {
         return Boolean.parseBoolean(properties.get(clazz.getSimpleName().toLowerCase() + "." + key));
     }
 
+    /**
+     * Get a double configuration value for the specified key.
+     *
+     * @param key The key for the configuration property.
+     * @return The double value associated with the key.
+     */
     public double getDouble(String key) {
         return Double.parseDouble(properties.get(clazz.getSimpleName().toLowerCase() + "." + key));
     }
 
-    public void overridePropertiy(String key, String value) {
+    /**
+     * Override a configuration property with a new value.
+     *
+     * @param key   The key for the configuration property.
+     * @param value The new value to set.
+     */
+    public void overrideProperty(String key, String value) {
         properties.put(clazz.getSimpleName().toLowerCase() + "." + key, value);
     }
-
-    public void overrideProperties(String[][] args) {
-        for(String[] arg : args) {
-            overridePropertiy(arg[0], arg[1]);
-        }
-    }
 }
-

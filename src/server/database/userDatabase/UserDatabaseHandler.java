@@ -5,19 +5,46 @@ import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * The `UserDatabaseHandler` class manages a database of users stored in a text file. It provides methods to add, retrieve,
+ * and manipulate user records.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
 public class UserDatabaseHandler {
-    private LinkedList<User> users;
+    /**
+     * The collection of users.
+     */
+    private final LinkedList<User> users;
+    /**
+     * The ID of the last user in the database.
+     */
     private int lastUserId;
+    /**
+     * The filename for user storage.
+     */
+    private final String filename;
 
-    private String filename;
-
+    /**
+     * Constructs a new `UserDatabaseHandler` with the specified database directory.
+     *
+     * @param databaseDirectory The directory where the user database is stored.
+     */
     public UserDatabaseHandler(String databaseDirectory) {
         users = new LinkedList<>();
         lastUserId = 0;
-        filename = databaseDirectory;// Initialize with a starting id
+        filename = databaseDirectory;
         loadUsersFromTextFile();
     }
 
+    /**
+     * Adds a new user to the database with the given username and password.
+     *
+     * @param username The username of the new user.
+     * @param password The password of the new user.
+     * @return `true` if the user is successfully added, `false` if the username already exists or an error occurs.
+     */
     public boolean addUser(String username, String password) {
         // Check if a user with the same username already exists
         for (User user : users) {
@@ -41,7 +68,12 @@ public class UserDatabaseHandler {
         }
     }
 
-
+    /**
+     * Retrieves a user by their unique ID.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return The `User` object if found, or `null` if the user is not found.
+     */
     public User getUserById(int id) {
         for (User user : users) {
             if (user.getId() == id) {
@@ -51,6 +83,12 @@ public class UserDatabaseHandler {
         return null; // User not found
     }
 
+    /**
+     * Retrieves a user by their username.
+     *
+     * @param username The username of the user to retrieve.
+     * @return The `User` object if found, or `null` if the user is not found.
+     */
     public User getUserByUsername(String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -60,15 +98,23 @@ public class UserDatabaseHandler {
         return null; // User not found
     }
 
+    /**
+     * Sorts the list of users by their unique IDs and updates the user database file.
+     */
     public void sortUsersById() {
         Collections.sort(users, Comparator.comparing(User::getId));
         saveUsersToTextFile();
     }
 
+    /**
+     * Loads users from the user database file into the database.
+     *
+     * @return `true` if the users are loaded successfully, `false` if an error occurs.
+     */
     private boolean loadUsersFromTextFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
                 if (parts.length == 3) {
                     int id = Integer.parseInt(parts[0]);
@@ -87,12 +133,17 @@ public class UserDatabaseHandler {
         }
     }
 
+    /**
+     * Appends a new user to the end of the user database file.
+     *
+     * @param user The user to append to the file.
+     * @return `true` if the user is appended successfully, `false` if an error occurs.
+     */
     private boolean appendUserToTextFile(User user) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
             writer.write(user.getId() + ":" + user.getUsername() + ":" + user.getPassword());
             writer.newLine();
             writer.flush();
-            writer.close();
             return true; // Successful append
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,15 +151,18 @@ public class UserDatabaseHandler {
         }
     }
 
+    /**
+     * Saves the list of users to the user database file.
+     *
+     * @return `true` if the users are saved successfully, `false` if an error occurs.
+     */
     private boolean saveUsersToTextFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (User user : users) {
                 writer.write(user.getId() + ":" + user.getUsername() + ":" + user.getPassword());
                 writer.newLine();
-
             }
             writer.flush();
-            writer.close();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,11 +170,12 @@ public class UserDatabaseHandler {
         }
     }
 
+    /**
+     * Prints the details of all users in the database.
+     */
     public void printUsers() {
-
         for (User user : users) {
             System.out.println(user.toString());
         }
     }
 }
-

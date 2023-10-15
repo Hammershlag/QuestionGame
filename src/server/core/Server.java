@@ -14,23 +14,66 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-import static help.ConsoleListener.startConsoleListener;
 import static help.ConsoleListener.stopConsoleListener;
 import static help.HelpPrint.printHelp;
 
+/**
+ * The `Server` class represents a basic server application for handling client connections and processing messages.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
 public class Server {
+    /**
+     * The path to the configuration file.
+     */
     protected static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
+    /**
+     * The port on which the server listens for incoming connections.
+     */
     private int port;
+    /**
+     * The IP address on which the server listens for incoming connections.
+     */
     private String ip;
+    /**
+     * The maximum number of clients that can be connected to the server at the same time.
+     */
     private int maxClients;
+    /**
+     * The collection of connected clients.
+     */
     private ConcurrentHashMap<String, Socket> clients;
+    /**
+     * The interval between pings to check for client responsiveness.
+     */
     private int pingInterval;
+    /**
+     * The minimum interval between pings to check for client responsiveness.
+     */
     private int minPingInterval;
+    /**
+     * The time of the last ping.
+     */
     private long lastPingTime;
+    /**
+     * The handler for user database operations.
+     */
     protected static UserDatabaseHandler userDatabaseHandler;
+    /**
+     * The handler for question database operations.
+     */
     protected static QuestionDatabaseHandler questionDatabaseHandler;
+    /**
+     * The configuration handler for server configuration.
+     */
     protected static ConfigHandler configHandler;
 
+    /**
+     * Constructs a `Server` instance with the specified configuration handler.
+     *
+     * @param configHandler The configuration handler to use for server configuration.
+     */
     public Server(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
         this.ip = configHandler.getBoolean("outgoing") ? configHandler.getString("ip") : configHandler.getString("iploc");
@@ -41,8 +84,14 @@ public class Server {
         this.lastPingTime = System.currentTimeMillis();
     }
 
+    /**
+     * Default constructor for the `Server` class.
+     */
     public Server(){}
 
+    /**
+     * Starts the server, accepts client connections, and handles incoming messages.
+     */
     public void startServer() {
         System.out.println("Server started on: " + ip + ":" + port);
         System.out.println("Max Clients: " + maxClients);
@@ -109,7 +158,11 @@ public class Server {
             }
         }
     }
-
+    /**
+     * Listens for user input in the background. It allows the server operator to enter commands through the console.
+     * The available commands are "exit" (to gracefully stop the server), "ping" (to ping all clients), and "clear"
+     * (to clear the terminal screen).
+     */
     private void listenForInputInBackground() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -132,6 +185,10 @@ public class Server {
         }
     }
 
+    /**
+     * Clears the terminal window where the server is running. The method detects the operating system and runs the
+     * appropriate command to clear the terminal screen. It supports Windows, Unix/Linux, and macOS.
+     */
     private void clearTerminal() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
@@ -149,7 +206,9 @@ public class Server {
     }
 
 
-
+    /**
+     * Pings all connected clients to check for responsiveness.
+     */
     private void pingAllClients() {
         // Iterate through clients and send ping messages
         for (Map.Entry<String, Socket> entry : clients.entrySet()) {
@@ -166,6 +225,9 @@ public class Server {
         }
     }
 
+    /**
+     * Closes all client connections and stops the server.
+     */
     private void closeAllClientConnections() {
         Iterator<Map.Entry<String, Socket>> iterator = clients.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -182,11 +244,19 @@ public class Server {
         }
     }
 
-
+    /**
+     * Generates a unique key for identifying a client based on their IP address and port.
+     *
+     * @param socket The socket associated with the client.
+     * @return A unique key for identifying the client.
+     */
     private String getClientKey(Socket socket) {
         return socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
     }
 
+    /**
+     * Pings clients at regular intervals in the background.
+     */
     private void pingClientsInBackground() {
         while (true) {
             // Calculate the time elapsed since the last ping
@@ -208,6 +278,11 @@ public class Server {
         }
     }
 
+    /**
+     * Pings all connected clients to check for responsiveness. This method iterates through connected clients and sends
+     * ping messages to each client. If a client doesn't respond within the specified time, it is considered unresponsive
+     * and removed from the list of clients.
+     */
     private void pingClients() {
         // Iterate through clients and send ping messages
         Iterator<Map.Entry<String, Socket>> iterator = clients.entrySet().iterator();
@@ -233,29 +308,35 @@ public class Server {
         }
     }
 
+    /**
+     * Handles command-line arguments and overrides configuration properties.
+     *
+     * @param args          An array of command-line arguments.
+     * @param configHandler The configuration handler to override properties.
+     */
     public static void checkArgs(String[] args, ConfigHandler configHandler) {
         for(int i = 0; i < args.length; i += 2) {
             if(args[i].equals("--help") || args[i].equals("-h")) {
                 printHelp("C:\\Projects\\TestGame\\TestGameServer\\src\\server\\README.md"); //Print README.md as help
                 System.exit(0);
             } else if(args[i].equals("--port") || args[i].equals("-p")) {
-                configHandler.overridePropertiy("port", args[i + 1]);
+                configHandler.overrideProperty("port", args[i + 1]);
             } else if(args[i].equals("--max-clients") || args[i].equals("-c")) {
-                configHandler.overridePropertiy("max_clients", args[i + 1]);
+                configHandler.overrideProperty("max_clients", args[i + 1]);
             } else if(args[i].equals("--ping-interval") || args[i].equals("-i")) {
-                configHandler.overridePropertiy("ping_interval", args[i + 1]);
+                configHandler.overrideProperty("ping_interval", args[i + 1]);
             } else if(args[i].equals("--outgoing") || args[i].equals("-o")) {
-                configHandler.overridePropertiy("outgoing", args[i + 1]);
+                configHandler.overrideProperty("outgoing", args[i + 1]);
             } else if(args[i].equals("--log-file") || args[i].equals("-l")) {
-                configHandler.overridePropertiy("log_file", args[i + 1]);
+                configHandler.overrideProperty("log_file", args[i + 1]);
             } else if(args[i].equals("--max-log-files") || args[i].equals("-m")) {
-                configHandler.overridePropertiy("max_log_files", args[i + 1]);
+                configHandler.overrideProperty("max_log_files", args[i + 1]);
             } else if(args[i].equals("--log-file-dir") || args[i].equals("-d")) {
-                configHandler.overridePropertiy("log_file_dir", args[i + 1]);
+                configHandler.overrideProperty("log_file_dir", args[i + 1]);
             } else if(args[i].equals("--user-database-dir") || args[i].equals("-u")){
-                configHandler.overridePropertiy("user_database_file", args[i + 1]);
+                configHandler.overrideProperty("user_database_file", args[i + 1]);
             } else if(args[i].equals("--question-database-dir") || args[i].equals("-q")){
-                configHandler.overridePropertiy("question_database_dir", args[i + 1]);
+                configHandler.overrideProperty("question_database_dir", args[i + 1]);
             } else {
                 System.out.println("Unknown argument: " + args[i]);
             }

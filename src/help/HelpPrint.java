@@ -4,10 +4,20 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * The `HelpPrint` class provides methods for printing the content of a text file to the console.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
 public class HelpPrint {
 
+    /**
+     * Prints the content of a text file to the console.
+     *
+     * @param filename The name of the file to be printed.
+     */
     public static void printHelp(String filename) {
-
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
@@ -21,5 +31,4 @@ public class HelpPrint {
             e.printStackTrace();
         }
     }
-
 }

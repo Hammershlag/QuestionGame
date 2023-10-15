@@ -8,22 +8,62 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-import static help.ConsoleListener.startConsoleListener;
 import static help.ConsoleListener.stopConsoleListener;
 import static help.HelpPrint.printHelp;
 
+/**
+ * The `Client` class represents a client application that can connect to a server.
+ * It allows the user to create and manage multiple client connections and send messages
+ * to the server.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
+
 public class Client {
+    /**
+     * Default path to the configuration file.
+     */
     protected static String configPath = "C:\\Projects\\TestGame\\TestGameServer\\src\\config\\config.ch";
 
+    /**
+     * The port number for the server connection.
+     */
     private int port;
+    /**
+     * The IP address of the server.
+     */
     private String ip;
+    /**
+     * The maximum allowed response time from the server.
+     */
     private double maxResponseTime;
-    private Map<String, Socket> clients; // Map to store client numbers and their sockets
+    /**
+     * A map to store client numbers and their corresponding sockets.
+     */
+    private Map<String, Socket> clients;
+    /**
+     * A timer for managing client responses.
+     */
     private Timer timer;
+    /**
+     * The starting index for client numbers.
+     */
     private int firstClientIndex;
+    /**
+     * The number of connection attempts to the server.
+     */
     private int connectionTries;
+    /**
+     * An executor service for handling message receivers for each client.
+     */
     private ExecutorService messageReceiverExecutor;
 
+    /**
+     * Creates a new `Client` instance with the specified configuration.
+     *
+     * @param configHandler The configuration handler for retrieving server connection details.
+     */
     public Client(ConfigHandler configHandler) {
         this.port = configHandler.getInt("port");
         this.ip = configHandler.getString("ip");
@@ -35,8 +75,14 @@ public class Client {
         this.messageReceiverExecutor = Executors.newCachedThreadPool();
     }
 
+    /**
+     * Default constructor for the `Client` class.
+     */
     public Client(){}
 
+    /**
+     * Starts the client application, allowing users to interact with the server and manage client connections.
+     */
     public void startClient() {
         System.out.println("Client started on: " + ip + ":" + port);
         System.out.println("All the commands are available in the README.md file");
@@ -88,6 +134,9 @@ public class Client {
         }
     }
 
+    /**
+     * Clears the terminal screen.
+     */
     private void clearTerminal() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
@@ -104,6 +153,11 @@ public class Client {
         }
     }
 
+    /**
+     * Processes a user command and executes the corresponding action.
+     *
+     * @param line The user's input command.
+     */
     private void processCommand(String line) {
         String[] parts = line.split(":", 2);
         if (parts.length == 2) {
@@ -139,6 +193,11 @@ public class Client {
         }
     }
 
+    /**
+     * Retrieves the MAC (Media Access Control) address of the client's network interface.
+     *
+     * @return The MAC address as a string.
+     */
     private String getMAC() {
         InetAddress localHost = null;
         String[] hexadecimal = null;
@@ -160,7 +219,11 @@ public class Client {
         return macAddress;
     }
 
-
+    /**
+     * Creates and sends a new client with the specified message to the server.
+     *
+     * @param message The message to be sent to the server.
+     */
     private void createAndSendClient(String message) {
         String os = System.getProperty("os.name");
         String username = "unll";
@@ -198,6 +261,12 @@ public class Client {
         }
     }
 
+    /**
+     * Receives a message from the server through the specified socket.
+     *
+     * @param socket The socket connected to the server.
+     * @return The server's response message, or null if there's no response.
+     */
     private String receiveMessage(Socket socket) {
         try {
             // Reading from the server
@@ -210,6 +279,12 @@ public class Client {
         }
     }
 
+    /**
+     * Sends a message to the server through the specified socket.
+     *
+     * @param socket The socket connected to the server.
+     * @param message The message to be sent.
+     */
     private void sendMessage(Socket socket, String message) {
         try {
             // Writing to the server
@@ -244,6 +319,12 @@ public class Client {
         }
     }
 
+    /**
+     * Closes a client connection and removes it from the client map.
+     *
+     * @param socket The client's socket.
+     * @param clientNumber The client's unique number.
+     */
     private void closeClient(Socket socket, String clientNumber) {
         try {
             // Close the client socket
@@ -258,6 +339,9 @@ public class Client {
         }
     }
 
+    /**
+     * Sends an "exit" message to all connected clients, closing their connections.
+     */
     private void sendExitToAllClients() {
         // Create a copy of client numbers to avoid ConcurrentModificationException
         List<String> clientNumbers = new ArrayList<>(clients.keySet());
@@ -268,33 +352,48 @@ public class Client {
         }
     }
 
+    /**
+     * Starts a message receiver thread for a client to receive server responses.
+     *
+     * @param socket The client's socket.
+     * @param clientNumber The client's unique number.
+     */
     private void startMessageReceiver(Socket socket, String clientNumber) {
         // Create a new message receiver thread for the client
         messageReceiverExecutor.execute(new MessageReceiver(socket, clientNumber));
     }
 
+    /**
+     * Closes all client connections and exits the client application.
+     */
     private void closeAllClients() {
         sendExitToAllClients();
         clients.clear();
     }
 
+    /**
+     * Checks command-line arguments and updates configuration properties accordingly.
+     *
+     * @param args The command-line arguments.
+     * @param configHandler The configuration handler for updating properties.
+     */
     public static void checkArgs(String[] args, ConfigHandler configHandler) {
         for(int i = 0; i < args.length; i += 2) {
             if(args[i].equals("--help") || args[i].equals("-h")) {
                 printHelp("C:\\Projects\\TestGame\\TestGameServer\\src\\client\\README.md"); //Print README.md as help
                 System.exit(0);
             }else if(args[i].equals("--max-response-time") || args[i].equals("-t")) {
-                configHandler.overridePropertiy("max_response_time", args[i + 1]);
+                configHandler.overrideProperty("max_response_time", args[i + 1]);
             } else if(args[i].equals("--first-client-index") || args[i].equals("-c")) {
-                configHandler.overridePropertiy("first_client_index", args[i + 1]);
+                configHandler.overrideProperty("first_client_index", args[i + 1]);
             } else if(args[i].equals("--connection_tries") || args[i].equals("-r")) {
-                configHandler.overridePropertiy("connection_tries", args[i + 1]);
+                configHandler.overrideProperty("connection_tries", args[i + 1]);
             } else if(args[i].equals("--log-file") || args[i].equals("-l")) {
-                configHandler.overridePropertiy("log_file", args[i + 1]);
+                configHandler.overrideProperty("log_file", args[i + 1]);
             } else if(args[i].equals("--max-log-files") || args[i].equals("-m")) {
-                configHandler.overridePropertiy("max_log_files", args[i + 1]);
+                configHandler.overrideProperty("max_log_files", args[i + 1]);
             } else if(args[i].equals("--log-file-dir") || args[i].equals("-d")) {
-                configHandler.overridePropertiy("log_file_dir", args[i + 1]);
+                configHandler.overrideProperty("log_file_dir", args[i + 1]);
             } else {
                 System.out.println("Unknown argument: " + args[i]);
             }

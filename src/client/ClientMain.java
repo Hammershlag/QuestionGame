@@ -6,9 +6,20 @@ import config.ConfigHandler;
 import static help.ConsoleListener.startConsoleListener;
 import static help.ConsoleListener.stopConsoleListener;
 
-public class ClientMain extends Client{
+/**
+ * The `ClientMain` class serves as the entry point for running a client for the TestGameServer project.
+ * It configures and starts the client application.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
+public class ClientMain extends Client {
 
-    //Used only to run client
+    /**
+     * Main method for running the client application.
+     *
+     * @param args Command-line arguments (not used in this implementation).
+     */
     public static void main(String[] args) {
         ConfigHandler configHandler = new ConfigHandler(configPath, Client.class);
 
@@ -21,5 +32,4 @@ public class ClientMain extends Client{
 
         stopConsoleListener();
     }
-
 }

@@ -11,13 +11,38 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The `ClientHandler` class is responsible for handling communication with individual clients connected to the server.
+ *
+ * @author Tomasz Zbroszczyk
+ * @version 1.0
+ */
 public class ClientHandler implements Runnable {
+    /**
+     * The socket for communicating with the client.
+     */
     private final Socket clientSocket;
+    /**
+     * The collection of connected clients.
+     */
     private final ConcurrentHashMap<String, Socket> clients;
+    /**
+     * The handler for user database operations.
+     */
+    private final UserDatabaseHandler userDatabaseHandler;
+    /**
+     * The handler for question database operations.
+     */
+    private final QuestionDatabaseHandler questionDatabaseHandler;
 
-    private UserDatabaseHandler userDatabaseHandler;
-    private QuestionDatabaseHandler questionDatabaseHandler;
-
+    /**
+     * Constructs a `ClientHandler` for handling communication with a client.
+     *
+     * @param socket                The socket for communicating with the client.
+     * @param clients               The collection of connected clients.
+     * @param userDatabaseHandler    The handler for user database operations.
+     * @param questionDatabaseHandler The handler for question database operations.
+     */
     public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients, UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler) {
         this.clientSocket = socket;
         this.clients = clients;
@@ -25,6 +50,9 @@ public class ClientHandler implements Runnable {
         this.questionDatabaseHandler = questionDatabaseHandler;
     }
 
+    /**
+     * Handles communication with the client. Reads incoming messages, processes them, and sends responses.
+     */
     @Override
     public void run() {
         PrintWriter out = null;
@@ -71,6 +99,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Closes the client's connection, removes the client from the collection, and displays an exit message.
+     *
+     * @param clientKey The unique key identifying the client.
+     */
     private void closeClient(String clientKey) {
         // Remove the client from the map
         clients.remove(clientKey);
@@ -86,6 +119,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Generates a unique key for identifying a client based on their IP address and port.
+     *
+     * @param socket The socket associated with the client.
+     * @return A unique key for identifying the client.
+     */
     private String getClientKey(Socket socket) {
         return socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
     }
