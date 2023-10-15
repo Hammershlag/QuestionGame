@@ -6,3 +6,5 @@
 ## Client:
 - ### To see Client manual go to [CLIENT.md](src/client/CLIENT.md) inside client package
 - ### Use Client for Server testing
+
+## Documentation -- Javadoc: [here](javaDoc/index.html)
