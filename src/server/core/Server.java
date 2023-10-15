@@ -21,6 +21,7 @@ import static help.HelpPrint.printHelp;
  * The `Server` class represents a basic server application for handling client connections and processing messages.
  *
  * @author Tomasz Zbroszczyk
+ * @since 05.10.2023
  * @version 1.0
  */
 public class Server {

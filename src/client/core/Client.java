@@ -17,6 +17,7 @@ import static help.HelpPrint.printHelp;
  * to the server.
  *
  * @author Tomasz Zbroszczyk
+ * @since 05.10.2023
  * @version 1.0
  */
 

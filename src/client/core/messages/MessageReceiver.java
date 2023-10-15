@@ -10,7 +10,7 @@ import java.net.Socket;
  *
  * @author Tomasz Zbroszczyk
  * @version 1.0
- * @since 15.10.2023
+ * @since 08.10.2023
  * @see java.net.Socket
  */
 public class MessageReceiver implements Runnable {

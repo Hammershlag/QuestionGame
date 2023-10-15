@@ -11,6 +11,7 @@ import static help.ConsoleListener.stopConsoleListener;
  * It configures and starts the client application.
  *
  * @author Tomasz Zbroszczyk
+ * @since 14.10.2023
  * @version 1.0
  */
 public class ClientMain extends Client {

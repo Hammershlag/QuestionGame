@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * and managing questions in a database. It also allows loading questions from a file and appending new questions to it.
  *
  * @author Tomasz Zbroszczyk
+ * @since 12.10.2023
  * @version 1.0
  */
 public class QuestionDatabaseHandler {

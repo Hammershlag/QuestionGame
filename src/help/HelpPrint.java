@@ -8,6 +8,7 @@ import java.io.IOException;
  * The `HelpPrint` class provides methods for printing the content of a text file to the console.
  *
  * @author Tomasz Zbroszczyk
+ * @since 10.10.2023
  * @version 1.0
  */
 public class HelpPrint {

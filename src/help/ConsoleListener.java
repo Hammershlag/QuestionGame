@@ -8,6 +8,7 @@ import java.util.Date;
  * The `ConsoleListener` class provides functionality to redirect console output to log files and manage log files.
  *
  * @author Tomasz Zbroszczyk
+ * @since 11.10.2023
  * @version 1.0
  */
 public class ConsoleListener {

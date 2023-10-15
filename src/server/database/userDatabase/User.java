@@ -4,6 +4,7 @@ package server.database.userDatabase;
  * The `User` class represents a user entity with an ID, username, and password.
  *
  * @author Tomasz Zbroszczyk
+ * @since 12.10.2023
  * @version 1.0
  */
 public class User {

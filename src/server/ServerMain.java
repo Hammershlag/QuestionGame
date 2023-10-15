@@ -13,6 +13,7 @@ import static help.ConsoleListener.stopConsoleListener;
  * and question database and starts the server to listen for client connections.
  *
  * @author Tomasz Zbroszczyk
+ * @since 14.10.2023
  * @version 1.0
  */
 public class ServerMain extends Server {

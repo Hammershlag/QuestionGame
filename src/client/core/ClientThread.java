@@ -11,6 +11,7 @@ import java.net.Socket;
  * It provides a way to interact with a server in a separate thread.
  *
  * @author Tomasz Zbroszczyk
+ * @since 07.10.2023
  * @version 1.0
  */
 public class ClientThread extends Thread {

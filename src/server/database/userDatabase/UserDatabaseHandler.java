@@ -10,6 +10,7 @@ import java.util.Comparator;
  * and manipulate user records.
  *
  * @author Tomasz Zbroszczyk
+ * @since 12.10.2023
  * @version 1.0
  */
 public class UserDatabaseHandler {

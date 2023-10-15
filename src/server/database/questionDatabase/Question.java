@@ -7,6 +7,7 @@ import java.util.LinkedList;
  * It includes an ID, type, question text, correct answer, and a list of possible answers.
  *
  * @author Tomasz Zbroszczyk
+ * @since 12.10.2023
  * @version 1.0
  */
 public class Question {

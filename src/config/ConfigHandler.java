@@ -10,6 +10,7 @@ import java.util.Map;
  * The `ConfigHandler` class is responsible for managing configuration properties loaded from a file.
  *
  * @author Tomasz Zbroszczyk
+ * @since 07.10.2023
  * @version 1.0
  */
 public class ConfigHandler {

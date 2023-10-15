@@ -5,6 +5,7 @@ package server.core.messages;
  * Each message contains a message content, sender, receiver, and a timestamp.
  *
  * @author Tomasz Zbroszczyk
+ * @since 07.10.2023
  * @version 1.0
  */
 public class MessageHandler {

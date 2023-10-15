@@ -7,6 +7,7 @@ import server.database.userDatabase.UserDatabaseHandler;
  * The `MessageProcessor` class is responsible for processing incoming messages and executing various server tasks based on message content.
  *
  * @author Tomasz Zbroszczyk
+ * @since 09.10.2023
  * @version 1.0
  */
 public class MessageProcessor {
