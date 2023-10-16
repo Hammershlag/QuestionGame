@@ -1,9 +1,0 @@
-Server started on: 127.0.0.1:1234
-Max Clients: 5
-Ping Interval: 500
-New client connected 192.168.0.94:53624
-Received from 192.168.0.94:53624: newClient:Windows 11:B0-7D-64-B7-C5-B4:192.168.0.94:1234:unll:1
-New client connected Windows 11
-Received from 192.168.0.94:53624: getQuestion:random
-Received from 192.168.0.94:53624: answerQuestion:lasjkdas
-Received from 192.168.0.94:53624: answerQuestion:id:3:asdasasdas

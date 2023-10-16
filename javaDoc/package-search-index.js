@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"client"},{"l":"client.core"},{"l":"client.core.messages"},{"l":"config"},{"l":"help"},{"l":"server"},{"l":"server.core"},{"l":"server.core.messages"},{"l":"server.database.questionDatabase"},{"l":"server.database.userDatabase"}];updateSearchResults();
