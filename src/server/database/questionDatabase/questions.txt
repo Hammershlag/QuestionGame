@@ -6,3 +6,4 @@
 5:0:Who wrote the play 'Romeo and Juliet'?:William Shakespeare:William Shakespeare;Charles Dickens;Jane Austen
 6:0:What animal barks?:Dog:Cat;Dog;Lizard
 7:0:What is the capital of Australia?:Canberra:Canberra;Sydney;Melbourne;Brisbane;Perth;Adelaide
+8:0:What is the capital of Poland?:Warsaw:Warsaw;Krakow;Wroclaw;Gdansk;Poznan;Lodz

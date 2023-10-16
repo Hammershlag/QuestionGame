@@ -5,6 +5,7 @@ import java.util.LinkedList;
 /**
  * The `Question` class represents a question entity with its associated properties.
  * It includes an ID, type, question text, correct answer, and a list of possible answers.
+ * It is used to store questions
  *
  * @author Tomasz Zbroszczyk
  * @since 12.10.2023

@@ -3,6 +3,7 @@ package server;
 import config.ConfigHandler;
 import server.core.Server;
 import server.database.questionDatabase.QuestionDatabaseHandler;
+import server.database.relationDatabase.RelationDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
 import static help.ConsoleListener.startConsoleListener;
@@ -31,9 +32,10 @@ public class ServerMain extends Server {
 
         startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
 
-        // Initialize user database
+        // Initialize databases
         userDatabaseHandler = new UserDatabaseHandler(configHandler.getString("user_database_dir"));
         questionDatabaseHandler = new QuestionDatabaseHandler(configHandler.getString("question_database_dir"));
+        relationDatabaseHandler = new RelationDatabaseHandler(configHandler.getString("relation_database_dir")); //TODO: add relation database inside Server class
 
         // Initialize and start the server
         Server server = new Server(configHandler);

@@ -2,6 +2,7 @@ package server.core;
 
 import config.ConfigHandler;
 import server.database.questionDatabase.QuestionDatabaseHandler;
+import server.database.relationDatabase.RelationDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
 import java.io.IOException;
@@ -65,6 +66,10 @@ public class Server {
      * The handler for question database operations.
      */
     protected static QuestionDatabaseHandler questionDatabaseHandler;
+    /**
+     * The handler for relation database operations.
+     */
+    protected static RelationDatabaseHandler relationDatabaseHandler;
     /**
      * The configuration handler for server configuration.
      */
@@ -131,7 +136,7 @@ public class Server {
                     System.out.println("New client connected " + clientKey);
 
                     // Create a new thread to handle the client
-                    ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler, questionDatabaseHandler);
+                    ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler, questionDatabaseHandler, relationDatabaseHandler);
                     executorService.execute(clientHandler);
                 } else {
                     // Handle messages from existing clients but do not accept new connections
@@ -139,7 +144,7 @@ public class Server {
                     String clientKey = getClientKey(client);
                     if (clients.containsKey(clientKey)) {
                         // Create a new thread to handle the client
-                        ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler, questionDatabaseHandler);
+                        ClientHandler clientHandler = new ClientHandler(client, clients,userDatabaseHandler, questionDatabaseHandler, relationDatabaseHandler);
                         executorService.execute(clientHandler);
                     } else {
                         // Close the socket for new clients trying to connect
@@ -338,6 +343,8 @@ public class Server {
                 configHandler.overrideProperty("user_database_file", args[i + 1]);
             } else if(args[i].equals("--question-database-dir") || args[i].equals("-q")){
                 configHandler.overrideProperty("question_database_dir", args[i + 1]);
+            } else if(args[i].equals("--relation-database-dir") || args[i].equals("-r")) {
+                configHandler.overrideProperty("relation_database_dir", args[i + 1]);
             } else {
                 System.out.println("Unknown argument: " + args[i]);
             }

@@ -2,6 +2,7 @@ package server.core;
 
 import server.core.messages.MessageProcessor;
 import server.database.questionDatabase.QuestionDatabaseHandler;
+import server.database.relationDatabase.RelationDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
 import java.io.BufferedReader;
@@ -37,6 +38,11 @@ public class ClientHandler implements Runnable {
     private final QuestionDatabaseHandler questionDatabaseHandler;
 
     /**
+     * The handler for relation database operations.
+     */
+    private final RelationDatabaseHandler relationDatabaseHandler;
+
+    /**
      * Constructs a `ClientHandler` for handling communication with a client.
      *
      * @param socket                The socket for communicating with the client.
@@ -44,11 +50,12 @@ public class ClientHandler implements Runnable {
      * @param userDatabaseHandler    The handler for user database operations.
      * @param questionDatabaseHandler The handler for question database operations.
      */
-    public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients, UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler) {
+    public ClientHandler(Socket socket, ConcurrentHashMap<String, Socket> clients, UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler, RelationDatabaseHandler relationDatabaseHandler) {
         this.clientSocket = socket;
         this.clients = clients;
         this.userDatabaseHandler = userDatabaseHandler;
         this.questionDatabaseHandler = questionDatabaseHandler;
+        this.relationDatabaseHandler = relationDatabaseHandler;
     }
 
     /**
@@ -77,7 +84,7 @@ public class ClientHandler implements Runnable {
                 } else {
                     // Writing the received message from the client
                     System.out.printf("Received from %s: %s%n", clientKey, line);
-                    MessageProcessor messageProcessor = new MessageProcessor(userDatabaseHandler, questionDatabaseHandler);
+                    MessageProcessor messageProcessor = new MessageProcessor(userDatabaseHandler, questionDatabaseHandler, relationDatabaseHandler);
                     String outMessage = messageProcessor.processMessage(line);
                     out.println(outMessage);
                     out.flush();

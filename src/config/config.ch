@@ -12,6 +12,7 @@ server:
     log_file_dir=C:\Projects\TestGame\TestGameServer\src\server\logs\                                                       # directory to store log files in
     user_database_dir=C:\Projects\TestGame\TestGameServer\src\server\database\userDatabase\users.txt                        # directory to store users database in
     question_database_dir=C:\Projects\TestGame\TestGameServer\src\server\database\questionDatabase\questions.txt            # directory to store quenstions database in
+    relation_database_dir=C:\Projects\TestGame\TestGameServer\src\server\database\relationDatabase\relations.txt            # directory to store relations database in
 client:
     max_response_time=1                                                                                                     # maximum time to wait for a response from the server in seconds
     first_client_index=1                                                                                                    # index of the first client

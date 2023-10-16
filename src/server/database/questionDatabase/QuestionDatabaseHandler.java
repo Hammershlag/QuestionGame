@@ -1,5 +1,6 @@
 package server.database.questionDatabase;
 
+import server.database.DatabaseHandler;
 import server.database.userDatabase.User;
 
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  * @since 12.10.2023
  * @version 1.0
  */
-public class QuestionDatabaseHandler {
+public class QuestionDatabaseHandler{
     /**
      * The collection of questions.
      */

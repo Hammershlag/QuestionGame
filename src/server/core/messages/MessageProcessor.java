@@ -1,6 +1,9 @@
 package server.core.messages;
 
+import server.database.questionDatabase.Question;
 import server.database.questionDatabase.QuestionDatabaseHandler;
+import server.database.relationDatabase.Relation;
+import server.database.relationDatabase.RelationDatabaseHandler;
 import server.database.userDatabase.UserDatabaseHandler;
 
 /**
@@ -21,13 +24,21 @@ public class MessageProcessor {
     private static QuestionDatabaseHandler questionDatabaseHandler;
 
     /**
+     * The handler for relation database operations.
+     */
+    private static RelationDatabaseHandler relationDatabaseHandler;
+
+    /**
      * Constructs a `MessageProcessor` with the specified user database handler and question database handler.
      *
-     * @param userDatabaseHandler    The handler for user database operations.
-     * @param questionDatabaseHandler The handler for question database operations.
+     * @param userDatabaseHandler       The handler for user database operations.
+     * @param questionDatabaseHandler   The handler for question database operations.
+     * @param relationDatabaseHandler   The handler for relation database operations.
      */
-    public MessageProcessor(UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler) {
+    public MessageProcessor(UserDatabaseHandler userDatabaseHandler, QuestionDatabaseHandler questionDatabaseHandler, RelationDatabaseHandler relationDatabaseHandler) {
         this.userDatabaseHandler = userDatabaseHandler;
+        this.questionDatabaseHandler = questionDatabaseHandler;
+        this.relationDatabaseHandler = relationDatabaseHandler;
         MessageProcessor.questionDatabaseHandler = questionDatabaseHandler;
     }
 
@@ -114,6 +125,83 @@ public class MessageProcessor {
                     }
                 }
                 return "bad_request";
+            }
+            case "addRelation": {
+                if (relationDatabaseHandler.add(Integer.parseInt(preProcessedMessage[1]), Integer.parseInt(preProcessedMessage[2])))
+                    return "Relation added successfully";
+                else
+                    return "bad_request";
+            }
+            case "getRelation": {
+                if (preProcessedMessage[1].equals("id")) {
+                    return relationDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])).toString();
+                } else if (preProcessedMessage[1].equals("users")) {
+                    return relationDatabaseHandler.getByName(Integer.parseInt(preProcessedMessage[2]), Integer.parseInt(preProcessedMessage[3])).toString() == null ? "bad_request" : relationDatabaseHandler.getByName(Integer.parseInt(preProcessedMessage[2]), Integer.parseInt(preProcessedMessage[3])).toString();
+                } else {
+                    return "bad_request";
+                }
+
+            }
+            //TODO updateRelation
+            case "updateRelation": {
+                if (preProcessedMessage[1].equals("id")) {
+                    return "Not yet implemented";
+                } else if (preProcessedMessage[1].equals("users")) {
+                    return "Not yet implemented";
+                } else {
+                    return "bad_request";
+                }
+
+            }
+            case "getRelations": {
+                if(preProcessedMessage[1].equals("userId"))
+                    return relationDatabaseHandler.getAll().stream().filter(relation -> relation.getUser1Id() == Integer.parseInt(preProcessedMessage[2]) || relation.getUser2Id() == Integer.parseInt(preProcessedMessage[2])).map(Object::toString).reduce("", (s, s2) -> s + s2 + "\n");
+                else if(preProcessedMessage[1].equals("all")) {
+                    return relationDatabaseHandler.getAll().stream().map(Object::toString).reduce("", (s, s2) -> s + s2 + "\n");
+                } else
+                    return "bad_request";
+            }
+            case "getRelationQuestions": {
+                if(preProcessedMessage[1].equals("id")) {
+                    Relation relation = relationDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2]));
+                    if(preProcessedMessage[5].equals("id") && relation != null && preProcessedMessage[3].equals("userId")) {
+                        int question;
+                        int count = 0;
+                        do {
+                        question = questionDatabaseHandler.getQuestions().get((int) (Math.random() * questionDatabaseHandler.getQuestions().size())).getId();
+                        } while ((relation.getQuestionsAnsweredByUser1().contains(question) && relation.getUser1Id() == Integer.parseInt(preProcessedMessage[4]))
+                                || (relation.getQuestionsAnsweredByUser2().contains(question) && relation.getUser2Id() == Integer.parseInt(preProcessedMessage[4]))
+                                || (relation.getQuestionsUnansweredByUser1().containsKey(question) && relation.getUser1Id() == Integer.parseInt(preProcessedMessage[4]))
+                                || (relation.getQuestionsUnansweredByUser2().containsKey(question) && relation.getUser2Id() == Integer.parseInt(preProcessedMessage[4]))
+                                || count++ > relationDatabaseHandler.getRelationsSize());
+                        return questionDatabaseHandler.getQuestionById(question).toString();
+                    } else
+                        return "bad_request";
+                } else
+                    return "bad_request";
+            }
+            case "relationAddQuestionAnswer": {
+                if(preProcessedMessage[1].equals("id")) {
+                    Relation relation = relationDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2]));
+                    if(relation != null && preProcessedMessage[3].equals("userId") && preProcessedMessage[5].equals("questionId")) {
+                        if(relation.getUser1Id() == Integer.parseInt(preProcessedMessage[4])) {
+                            relation.addQuestionAnsweredByUser1(Integer.parseInt(preProcessedMessage[6]), preProcessedMessage[7]);
+                            relationDatabaseHandler.update();
+                            return "Question answered successfully";
+                        } else if(relation.getUser2Id() == Integer.parseInt(preProcessedMessage[4])) {
+                            relation.addQuestionAnsweredByUser2(Integer.parseInt(preProcessedMessage[6]), preProcessedMessage[7]);
+                            relationDatabaseHandler.update();
+                            return "Question answered successfully";
+                        } else {
+                            return "bad_request";
+                        }
+                    } else
+                        return "bad_request";
+                } else
+                    return "bad_request";
+            }
+            case "answerRelationQuestion": {
+
             }
             default:
                 return "bad_message";
