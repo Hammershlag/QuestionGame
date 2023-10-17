@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The `ClientHandler` class is responsible for handling communication with individual clients connected to the server.
  *
+ * @uses Runnable
  * @author Tomasz Zbroszczyk
  * @since 05.10.2023
  * @version 1.0

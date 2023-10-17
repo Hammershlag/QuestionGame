@@ -1,5 +1,3 @@
 ### TODO:
-- Add versioning
-- Add author
-- Add RelationDatabaseHandler implemantations
-- Refactor DatabaseHandlers to support DatabaseHandler interface
+- Add more tests (automate tests)
+- Test all database handlers (src/client/tests)

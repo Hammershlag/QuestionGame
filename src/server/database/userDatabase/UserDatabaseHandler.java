@@ -1,5 +1,7 @@
 package server.database.userDatabase;
 
+import server.database.DatabaseHandler;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Collections;
@@ -9,11 +11,12 @@ import java.util.Comparator;
  * The `UserDatabaseHandler` class manages a database of users stored in a text file. It provides methods to add, retrieve,
  * and manipulate user records.
  *
+ * @uses DatabaseHandler
  * @author Tomasz Zbroszczyk
  * @since 12.10.2023
  * @version 1.0
  */
-public class UserDatabaseHandler {
+public class UserDatabaseHandler implements DatabaseHandler<User> {
     /**
      * The collection of users.
      */
@@ -36,7 +39,7 @@ public class UserDatabaseHandler {
         users = new LinkedList<>();
         lastUserId = 0;
         filename = databaseDirectory;
-        loadUsersFromTextFile();
+        loadFromFile();
     }
 
     /**
@@ -46,21 +49,33 @@ public class UserDatabaseHandler {
      * @param password The password of the new user.
      * @return `true` if the user is successfully added, `false` if the username already exists or an error occurs.
      */
-    public boolean addUser(String username, String password) {
+    public boolean add(String username, String password) {
+        return add(username + ":" + password);
+    }
+
+    /**
+     * Adds a new user to the database from the given string.
+     * @uses DatabaseHandler
+     * @param str
+     * @return true if the user is successfully added, false if an error occurs
+     */
+    @Override
+    public boolean add(String str) {
         // Check if a user with the same username already exists
+        String[] parts = str.split(":");
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
+            if (user.getUsername().equals(parts[0])) {
                 System.out.println("User with the same username already exists.");
                 return false; // User not added
             }
         }
 
         lastUserId++; // Increment the user id for the new user
-        User newUser = new User(lastUserId, username, password);
+        User newUser = new User(lastUserId, parts[0], parts[1]);
         users.add(newUser);
 
         // Attempt to append the user to the file
-        if (appendUserToTextFile(newUser)) {
+        if (appendToFile(newUser)) {
             return true; // User added and stored in the file successfully
         } else {
             System.out.println("Failed to append user to the file.");
@@ -71,11 +86,12 @@ public class UserDatabaseHandler {
 
     /**
      * Retrieves a user by their unique ID.
-     *
+     * @uses DatabaseHandler
      * @param id The ID of the user to retrieve.
      * @return The `User` object if found, or `null` if the user is not found.
      */
-    public User getUserById(int id) {
+    @Override
+    public User getById(int id) {
         for (User user : users) {
             if (user.getId() == id) {
                 return user;
@@ -86,13 +102,14 @@ public class UserDatabaseHandler {
 
     /**
      * Retrieves a user by their username.
-     *
+     * @uses DatabaseHandler
      * @param username The username of the user to retrieve.
      * @return The `User` object if found, or `null` if the user is not found.
      */
-    public User getUserByUsername(String username) {
+    @Override
+    public User getByName(String... username) {
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
+            if (user.getUsername().equals(username[0])) {
                 return user;
             }
         }
@@ -101,18 +118,21 @@ public class UserDatabaseHandler {
 
     /**
      * Sorts the list of users by their unique IDs and updates the user database file.
+     * @uses DatabaseHandler
      */
-    public void sortUsersById() {
+    @Override
+    public void sortById() {
         Collections.sort(users, Comparator.comparing(User::getId));
-        saveUsersToTextFile();
+        update();
     }
 
     /**
      * Loads users from the user database file into the database.
-     *
+     * @uses DatabaseHandler
      * @return `true` if the users are loaded successfully, `false` if an error occurs.
      */
-    private boolean loadUsersFromTextFile() {
+    @Override
+    public boolean loadFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -136,11 +156,12 @@ public class UserDatabaseHandler {
 
     /**
      * Appends a new user to the end of the user database file.
-     *
+     * @uses DatabaseHandler
      * @param user The user to append to the file.
      * @return `true` if the user is appended successfully, `false` if an error occurs.
      */
-    private boolean appendUserToTextFile(User user) {
+    @Override
+    public boolean appendToFile(User user) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
             writer.write(user.getId() + ":" + user.getUsername() + ":" + user.getPassword());
             writer.newLine();
@@ -153,11 +174,24 @@ public class UserDatabaseHandler {
     }
 
     /**
+     * Appends a string to the end of the file. Considers str is in a correct format.
+     * @uses DatabaseHandler
+     * @param str
+     * @return true if the record is successfully appended, false if an error occurs
+     */
+    @Deprecated
+    @Override
+    public boolean appendToFile(String str) {
+        return false;
+    }
+
+    /**
      * Saves the list of users to the user database file.
-     *
+     * @uses DatabaseHandler
      * @return `true` if the users are saved successfully, `false` if an error occurs.
      */
-    private boolean saveUsersToTextFile() {
+    @Override
+    public boolean update() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (User user : users) {
                 writer.write(user.getId() + ":" + user.getUsername() + ":" + user.getPassword());
@@ -169,6 +203,16 @@ public class UserDatabaseHandler {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Gets a list of all users stored in the database.
+     * @uses DatabaseHandler
+     * @return A linked list of all users.
+     */
+    @Override
+    public LinkedList<User> getAll() {
+        return users;
     }
 
     /**

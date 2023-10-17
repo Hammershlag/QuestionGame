@@ -34,6 +34,8 @@ To run Server run main inside ServerMain class
 | `getRelationQuestions:id:RELATIONID:userId:ID:id:random`                                                                                                          | Getting random question from database for relation with RELATIONID (relation.txt)                            |
 | `answerRelationQuestion:id:RELATIONID:userId:questionId:answer`                                                                                                   | Getting answer to question from database for relation with RELATIONID (relation.txt)                         |
 | `relationAddQuestionAnswer:id:RELATIONID:userId:id:questionId:id:answer`                                                                                          | Getting answer to question to database for relation with RELATIONID (to unanswered questions) (relation.txt) |
+
+
 ## Initialisation arguments
 
 | Argument                         | Explanation                                                                                                       |

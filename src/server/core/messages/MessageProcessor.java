@@ -1,6 +1,5 @@
 package server.core.messages;
 
-import server.database.questionDatabase.Question;
 import server.database.questionDatabase.QuestionDatabaseHandler;
 import server.database.relationDatabase.Relation;
 import server.database.relationDatabase.RelationDatabaseHandler;
@@ -67,15 +66,15 @@ public class MessageProcessor {
                 return "New client connected " + preProcessedMessage[1];
             }
             case "newUser": {
-                if (userDatabaseHandler.addUser(preProcessedMessage[1], preProcessedMessage[2])) {
+                if (userDatabaseHandler.add(preProcessedMessage[1], preProcessedMessage[2])) {
                     return "User added successfully";
                 } else {
                     return "bad_request";
                 }
             }
             case "login": {
-                if (userDatabaseHandler.getUserByUsername(preProcessedMessage[1]) != null) {
-                    if (userDatabaseHandler.getUserByUsername(preProcessedMessage[1]).getPassword().equals(preProcessedMessage[2])) {
+                if (userDatabaseHandler.getByName(preProcessedMessage[1]) != null) {
+                    if (userDatabaseHandler.getByName(preProcessedMessage[1]).getPassword().equals(preProcessedMessage[2])) {
                         return "User logged in";
                     } else {
                         return "bad_request";
@@ -86,14 +85,14 @@ public class MessageProcessor {
             }
             case "getUser": {
                 if (preProcessedMessage[1].equals("username")) {
-                    if (userDatabaseHandler.getUserByUsername(preProcessedMessage[2]) != null) {
-                        return userDatabaseHandler.getUserByUsername(preProcessedMessage[2]).toString();
+                    if (userDatabaseHandler.getByName(preProcessedMessage[2]) != null) {
+                        return userDatabaseHandler.getByName(preProcessedMessage[2]).toString();
                     } else {
                         return "bad_request";
                     }
                 } else if (preProcessedMessage[1].equals("id")) {
-                    if (userDatabaseHandler.getUserById(Integer.parseInt(preProcessedMessage[2])) != null) {
-                        return userDatabaseHandler.getUserById(Integer.parseInt(preProcessedMessage[2])).toString();
+                    if (userDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])) != null) {
+                        return userDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])).toString();
                     } else {
                         return "bad_request";
                     }
@@ -103,25 +102,25 @@ public class MessageProcessor {
             }
             case "getQuestion": {
                 if (preProcessedMessage[1].equals("id")) {
-                    if (questionDatabaseHandler.getQuestionById(Integer.parseInt(preProcessedMessage[2])) != null) {
-                        return questionDatabaseHandler.getQuestionById(Integer.parseInt(preProcessedMessage[2])).toString();
+                    if (questionDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])) != null) {
+                        return questionDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])).toString();
                     } else {
                         return "bad_request";
                     }
                 } else if (preProcessedMessage[1].equals("random")) {
-                    return questionDatabaseHandler.getQuestions().get((int) (Math.random() * questionDatabaseHandler.getQuestions().size())).toString();
+                    return questionDatabaseHandler.getAll().get((int) (Math.random() * questionDatabaseHandler.getAll().size())).toString();
                 } else {
                     return "bad_request";
                 }
             }
             case "addQuestion": {
-                questionDatabaseHandler.addQuestion(preProcessedMessage[1], preProcessedMessage[2], preProcessedMessage[3], preProcessedMessage[4].split(";"));
+                questionDatabaseHandler.add(preProcessedMessage[1], preProcessedMessage[2], preProcessedMessage[3], preProcessedMessage[4].split(";"));
                 return "Question added successfully";
             }
             case "answerQuestion": {
                 if (preProcessedMessage[1].equals("id")) {
-                    if (questionDatabaseHandler.getQuestionById(Integer.parseInt(preProcessedMessage[2])) != null) {
-                        return questionDatabaseHandler.getQuestionById(Integer.parseInt(preProcessedMessage[2])).compareAnswer(preProcessedMessage[3]) ? "Correct answer" : "Wrong answer";
+                    if (questionDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])) != null) {
+                        return questionDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])).compareAnswer(preProcessedMessage[3]) ? "Correct answer" : "Wrong answer";
                     }
                 }
                 return "bad_request";
@@ -136,7 +135,7 @@ public class MessageProcessor {
                 if (preProcessedMessage[1].equals("id")) {
                     return relationDatabaseHandler.getById(Integer.parseInt(preProcessedMessage[2])).toString();
                 } else if (preProcessedMessage[1].equals("users")) {
-                    return relationDatabaseHandler.getByName(Integer.parseInt(preProcessedMessage[2]), Integer.parseInt(preProcessedMessage[3])).toString() == null ? "bad_request" : relationDatabaseHandler.getByName(Integer.parseInt(preProcessedMessage[2]), Integer.parseInt(preProcessedMessage[3])).toString();
+                    return relationDatabaseHandler.getByName(preProcessedMessage[2], preProcessedMessage[3]).toString() == null ? "bad_request" : relationDatabaseHandler.getByName(preProcessedMessage[2], preProcessedMessage[3]).toString();
                 } else {
                     return "bad_request";
                 }
@@ -168,13 +167,13 @@ public class MessageProcessor {
                         int question;
                         int count = 0;
                         do {
-                        question = questionDatabaseHandler.getQuestions().get((int) (Math.random() * questionDatabaseHandler.getQuestions().size())).getId();
+                        question = questionDatabaseHandler.getAll().get((int) (Math.random() * questionDatabaseHandler.getAll().size())).getId();
                         } while ((relation.getQuestionsAnsweredByUser1().contains(question) && relation.getUser1Id() == Integer.parseInt(preProcessedMessage[4]))
                                 || (relation.getQuestionsAnsweredByUser2().contains(question) && relation.getUser2Id() == Integer.parseInt(preProcessedMessage[4]))
                                 || (relation.getQuestionsUnansweredByUser1().containsKey(question) && relation.getUser1Id() == Integer.parseInt(preProcessedMessage[4]))
                                 || (relation.getQuestionsUnansweredByUser2().containsKey(question) && relation.getUser2Id() == Integer.parseInt(preProcessedMessage[4]))
                                 || count++ > relationDatabaseHandler.getRelationsSize());
-                        return questionDatabaseHandler.getQuestionById(question).toString();
+                        return questionDatabaseHandler.getById(question).toString();
                     } else
                         return "bad_request";
                 } else
@@ -201,7 +200,7 @@ public class MessageProcessor {
                     return "bad_request";
             }
             case "answerRelationQuestion": {
-
+                //TODO implement answerRelationQuestion
             }
             default:
                 return "bad_message";

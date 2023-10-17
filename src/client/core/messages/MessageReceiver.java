@@ -8,6 +8,7 @@ import java.net.Socket;
 /**
  * The MessageReceiver class is responsible for receiving and processing messages from the server.
  *
+ * @uses Runnable
  * @author Tomasz Zbroszczyk
  * @version 1.0
  * @since 08.10.2023

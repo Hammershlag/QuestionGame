@@ -177,10 +177,20 @@ public class Relation {
         return questionsUnansweredByUser1;
     }
 
+    /**
+     * Adds question with the answer to the list of questions answered by the first user.
+     * @param questionId Id of the question
+     * @param answer Users answer to the question
+     */
     public void addQuestionAnsweredByUser1(int questionId, String answer) {
         this.questionsUnansweredByUser1.put(questionId, answer);
     }
 
+    /**
+     * Adds question with the answer to the list of questions answered by the second user.
+     * @param questionId Id of the question
+     * @param answer Users answer to the question
+     */
     public void addQuestionAnsweredByUser2(int questionId, String answer) {
         this.questionsUnansweredByUser2.put(questionId, answer);
     }
@@ -227,6 +237,11 @@ public class Relation {
                 ":" + questionsUnansweredByUser2Str;
     }
 
+    /**
+     * Creates a Relation object from a string (database format).
+     * @param str String representation of the Relation object. Assuming correct format
+     * @return Relation object
+     */
     public Relation fromString(String str) {
         String[] parts = str.split(":");
         int id = Integer.parseInt(parts[0].trim());

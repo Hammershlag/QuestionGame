@@ -123,6 +123,7 @@ public class ConsoleListener {
 
 /**
  * The `TeeOutputStream` class extends `OutputStream` to duplicate output to two different output streams.
+ * @uses OutputStream
  */
 class TeeOutputStream extends OutputStream {
     /**

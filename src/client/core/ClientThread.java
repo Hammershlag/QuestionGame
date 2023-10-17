@@ -10,6 +10,7 @@ import java.net.Socket;
  * The `ClientThread` class represents a client thread that connects to a server and sends a message.
  * It provides a way to interact with a server in a separate thread.
  *
+ * @uses Thread
  * @author Tomasz Zbroszczyk
  * @since 07.10.2023
  * @version 1.0

@@ -13,6 +13,7 @@ import static help.ConsoleListener.stopConsoleListener;
  * The `ServerMain` class is the entry point for the server application. It initializes the server, user database,
  * and question database and starts the server to listen for client connections.
  *
+ * @uses Server
  * @author Tomasz Zbroszczyk
  * @since 14.10.2023
  * @version 1.0
