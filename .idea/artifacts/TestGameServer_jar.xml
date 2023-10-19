@@ -2,6 +2,9 @@
   <artifact type="jar" name="TestGameServer:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/TestGameServer_jar</output-path>
     <root id="archive" name="TestGameServer.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/server/META-INF/MANIFEST.MF" />
+      </element>
       <element id="module-output" name="TestGameServer" />
     </root>
   </artifact>

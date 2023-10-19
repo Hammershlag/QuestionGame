@@ -252,22 +252,34 @@ public class Relation {
         LinkedList<Integer> questionsAnsweredByUser1 = new LinkedList<>();
         String[] questionsAnsweredByUser1String = parts[5].trim().split(";");
         for (String questionId : questionsAnsweredByUser1String) {
+            if (questionId.equals("")) {
+                continue;
+            }
             questionsAnsweredByUser1.add(Integer.parseInt(questionId));
         }
         LinkedList<Integer> questionsAnsweredByUser2 = new LinkedList<>();
         String[] questionsAnsweredByUser2String = parts[6].trim().split(";");
         for (String questionId : questionsAnsweredByUser2String) {
+            if (questionId.equals("")) {
+                continue;
+            }
             questionsAnsweredByUser2.add(Integer.parseInt(questionId));
         }
         Map<Integer, String> questionsUnansweredByUser1 = new HashMap<>();
         String[] questionsUnansweredByUser1String = parts[7].trim().split(";");
         for (String questionId : questionsUnansweredByUser1String) {
+            if (questionId.equals("")) {
+                continue;
+            }
             String[] questionParts = questionId.split("-");
             questionsUnansweredByUser1.put(Integer.parseInt(questionParts[0]), questionParts[1]);
         }
         Map<Integer, String> questionsUnansweredByUser2 = new HashMap<>();
         String[] questionsUnansweredByUser2String = parts[8].trim().split(";");
         for (String questionId : questionsUnansweredByUser2String) {
+            if (questionId.equals("")) {
+                continue;
+            }
             String[] questionParts = questionId.split("-");
             questionsUnansweredByUser2.put(Integer.parseInt(questionParts[0]), questionParts[1]);
         }

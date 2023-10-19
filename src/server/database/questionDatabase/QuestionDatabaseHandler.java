@@ -163,7 +163,7 @@ public class QuestionDatabaseHandler implements DatabaseHandler<Question> {
 
     @Override
     public Question getByName(String... str) {
-        return questions.stream().filter(question -> question.getQuestion().equals(str[0])).collect(Collectors.toList()).getFirst();
+        return questions.stream().filter(question -> question.getQuestion().equals(str[0])).collect(Collectors.toList()).get(0);
     }
 
     /**
