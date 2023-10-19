@@ -34,3 +34,4 @@ All Client side messages should be sent in the following format: clientNumber:me
 | `--log-file` , `-l`           | Sets the file to log console output to (default: serverConsole)                                                   |
 | `--max-log-files` , `-m`      | Sets the maximum number of log files to keep (default: 5)                                                         |
 | `--log-file-dir` , `-d`       | Sets the directory to store log files in (default: ./logs/)                                                       |
+| `--test-mode`, `-e`           | Sets the client to test mode (default: false)                                                                     |

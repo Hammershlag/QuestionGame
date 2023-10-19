@@ -20,5 +20,5 @@ client:
     log_file=clientConsole                                                                                                  # file to log console output to
     max_log_files=5                                                                                                         # maximum number of log files to keep
     log_file_dir=C:\Projects\TestGame\TestGameServer\src\client\logs\terminalLogs                                           # directory to store log files in
-
+    test_modew=false
 

@@ -28,9 +28,12 @@ public class ClientMain extends Client {
         checkArgs(args, configHandler);
 
         startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
+        if(configHandler.getBoolean("test_mode")) {
+        } else {
+            Client client = new Client(configHandler);
+            client.startClient();
+        }
 
-        Client client = new Client(configHandler);
-        client.startClient();
 
         stopConsoleListener();
     }
