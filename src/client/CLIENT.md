@@ -35,3 +35,37 @@ All Client side messages should be sent in the following format: clientNumber:me
 | `--max-log-files` , `-m`      | Sets the maximum number of log files to keep (default: 5)                                                         |
 | `--log-file-dir` , `-d`       | Sets the directory to store log files in (default: ./logs/)                                                       |
 | `--test-mode`, `-e`           | Sets the client to test mode (default: false)                                                                     |
+
+## Test Client
+
+To run tests use `--test-mode` or `-e` as an argument.
+
+## Test file (tests.t)
+
+### Tests should be in following format:
+```
+Test Number:Test Name:Test Description
+    command 1
+    answer 1
+    command2
+    answer 2
+    command 3
+    answer 3
+    ...
+end
+```
+
+### Custom commands for testing that will not be considered as console input:
+#### 1. For loop; i - how many times you want it to run
+```
+for i times
+    command 1
+    answer 1
+    command 2
+    answer 2
+end for
+```
+
+- `command` is the console input you want to test.
+- `answer` is the console output you're expecting after running `command`
+

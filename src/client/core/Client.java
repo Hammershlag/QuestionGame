@@ -30,35 +30,35 @@ public class Client {
     /**
      * The port number for the server connection.
      */
-    private int port;
+    protected int port;
     /**
      * The IP address of the server.
      */
-    private String ip;
+    protected String ip;
     /**
      * The maximum allowed response time from the server.
      */
-    private double maxResponseTime;
+    protected double maxResponseTime;
     /**
      * A map to store client numbers and their corresponding sockets.
      */
-    private Map<String, Socket> clients;
+    protected Map<String, Socket> clients;
     /**
      * A timer for managing client responses.
      */
-    private Timer timer;
+    protected Timer timer;
     /**
      * The starting index for client numbers.
      */
-    private int firstClientIndex;
+    protected int firstClientIndex;
     /**
      * The number of connection attempts to the server.
      */
-    private int connectionTries;
+    protected int connectionTries;
     /**
      * An executor service for handling message receivers for each client.
      */
-    private ExecutorService messageReceiverExecutor;
+    protected ExecutorService messageReceiverExecutor;
 
     /**
      * Creates a new `Client` instance with the specified configuration.
@@ -138,7 +138,7 @@ public class Client {
     /**
      * Clears the terminal screen.
      */
-    private void clearTerminal() {
+    protected void clearTerminal() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
 
@@ -159,7 +159,7 @@ public class Client {
      *
      * @param line The user's input command.
      */
-    private void processCommand(String line) {
+    protected void processCommand(String line) {
         String[] parts = line.split(":", 2);
         if (parts.length == 2) {
             String command = parts[0].trim();
@@ -343,7 +343,7 @@ public class Client {
     /**
      * Sends an "exit" message to all connected clients, closing their connections.
      */
-    private void sendExitToAllClients() {
+    protected void sendExitToAllClients() {
         // Create a copy of client numbers to avoid ConcurrentModificationException
         List<String> clientNumbers = new ArrayList<>(clients.keySet());
 
@@ -367,7 +367,7 @@ public class Client {
     /**
      * Closes all client connections and exits the client application.
      */
-    private void closeAllClients() {
+    protected void closeAllClients() {
         sendExitToAllClients();
         clients.clear();
     }
