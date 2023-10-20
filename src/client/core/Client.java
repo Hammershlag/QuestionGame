@@ -396,7 +396,7 @@ public class Client {
             } else if(args[i].equals("--log-file-dir") || args[i].equals("-d")) {
                 configHandler.overrideProperty("log_file_dir", args[i + 1]);
             } else if(args[i].equals("--test-mode") || args[i].equals("-e")) {
-                configHandler.overrideProperty("test", args[i + 1]);
+                configHandler.overrideProperty("test_mode", args[i + 1]);
             } else {
                 System.out.println("Unknown argument: " + args[i]);
             }

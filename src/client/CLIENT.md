@@ -66,6 +66,20 @@ for i times
 end for
 ```
 
+#### 2. end
+```
+    ...
+end
+```
+is equal to:
+```
+    ...
+    1:exit
+    ???
+    exit
+    ???
+```
+
 - `command` is the console input you want to test.
 - `answer` is the console output you're expecting after running `command`
 

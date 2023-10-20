@@ -1,6 +1,7 @@
 package client;
 
 import client.core.Client;
+import client.test.ClientTest;
 import config.ConfigHandler;
 
 import static help.ConsoleListener.startConsoleListener;
@@ -29,6 +30,8 @@ public class ClientMain extends Client {
 
         startConsoleListener(configHandler.getString("log_file_dir"), configHandler.getString("log_file"), configHandler.getInt("max_log_files"));
         if(configHandler.getBoolean("test_mode")) {
+            ClientTest clientTest = new ClientTest(configHandler);
+            clientTest.startClient();
         } else {
             Client client = new Client(configHandler);
             client.startClient();
