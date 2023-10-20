@@ -19,6 +19,8 @@ public class Test {
     protected int commandPtr = 0;
     protected int answerPtr = 0;
 
+    public boolean isCorrect = true;
+
     public Test(int testId, String testName, String testDescription, List<String> commands, List<String> answers) {
         this.testId = testId;
         this.testName = testName;

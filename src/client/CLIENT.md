@@ -54,7 +54,8 @@ Test Number:Test Name:Test Description
     ...
 end
 ```
-
+- `command` is the console input you want to test.
+- `answer` is the console output you're expecting after running `command`
 ### Custom commands for testing that will not be considered as console input:
 #### 1. For loop; i - how many times you want it to run
 ```
@@ -80,6 +81,17 @@ is equal to:
     ???
 ```
 
-- `command` is the console input you want to test.
-- `answer` is the console output you're expecting after running `command`
+### Custom functions for testing that will be replaced by their output
+#### How to use:
+```
+    ...
+    command{functionName}commandContinuation
+    ...
+```
+Just insert the function name between `{}` inside the command, and it will be replaced by its output.
+
+#### Functions:
+- `randomNumber(beg,end)` - returns random number between beg and end, beg and end should be integers
+- `randomNumber(len)` - returns random number of length len, len should be an integer
+- `randomString(len)` - returns random string of length len, len should be an integer
 

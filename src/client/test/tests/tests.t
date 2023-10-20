@@ -24,14 +24,14 @@ end
 4: Sending message: Valid message type with not valid input
     new:Testing
     ???
-    1:newUser:ThisShouldBeWrong
+    1:newUser:{randomString(32)}
     ???
 end
 
 5: New User: Testing newUser, non existing
     new:Testing
     ???
-    1:newUser:notExisting:notExisting
+    1:newUser:{randomString(16)}:{randomString(16)}
     ???
 end
 
@@ -45,7 +45,7 @@ end
 7: Get User: Testing getUser, non existing, by id
     new:Testing
     ???
-    1:getUser:id:notExistingId
+    1:getUser:id:{randomNumber(10)}
     ???
 end
 
@@ -59,7 +59,7 @@ end
 9: Get User: Testing getUser, non existing, by username
     new:Testing
     ???
-    1:getUser:username:nonExistingUsername
+    1:getUser:username:{randomString(16)}
     ???
 end
 
@@ -73,14 +73,14 @@ end
 11: Login: Testing login, non existing username
     new:Testing
     ???
-    1:login:nonExistingUsername:somePassword
+    1:login:{randomString(16)}:{randomString(16)}
     ???
 end
 
 12: Login: Testing login, existing username, wrong password
     new:Testing
     ???
-    1:login:alreadyExistingUsername:wrongPassword
+    1:login:alreadyExistingUsername:{randomString(16)}
     ???
 end
 
@@ -94,7 +94,7 @@ end
 14: Get Question: Testing getQuestion, non existing, by id
     new:Testing
     ???
-    1:getQuestion:id:notExistingId
+    1:getQuestion:id:{randomNumber(10)}
     ???
 end
 
@@ -140,21 +140,21 @@ end
 20: Answer Question: Testing answerQuestion, non existing question
     new:Testing
     ???
-    1:answerQuestion:id:nonExistingId:someAnswer:someUser
+    1:answerQuestion:id:{randomNumber(10)}:{randomString(16)}:someUser
     ???
 end
 
 21: Answer Question: Testing answerQuestion, already existing question, wrong answer, non existing username
     new:Testing
     ???
-    1:answerQuestion:id:alreadyExistingId:wrongAnswer:wrongUsername
+    1:answerQuestion:id:alreadyExistingId:{randomString(16)}:{randomString(16)}
     ???
 end
 
 22: Answer Question: Testing answerQuestion, already existing question, wrong answer, already existing username
     new:Testing
     ???
-    1:answerQuestion:id:alreadyExistingId:wrongAnswer:goodUsername
+    1:answerQuestion:id:alreadyExistingId:{randomString(16)}:goodUsername
     ???
 end
 
