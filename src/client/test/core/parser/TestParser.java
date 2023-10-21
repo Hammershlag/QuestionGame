@@ -6,10 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,13 +25,18 @@ public class TestParser extends Test {
     private final String regex_for_end = "\\s*end for";
 
     protected List<Test> tests = new ArrayList<>();
+    private static Map<String, String> varString = new HashMap<>();
+    private static Map<String, Integer> varInt = new HashMap<>();
+    private static Map<String, Double> varDouble = new HashMap<>();
+
+    private static List<String> names = new ArrayList<>();
 
     public TestParser(String test_dir) {
         this.test_dir = test_dir;
     }
 
+    //TODO add ability to use variables inside commands
     public void parse() {
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(test_dir));
             String line;
@@ -42,6 +44,10 @@ public class TestParser extends Test {
             while((line = br.readLine()) != null) {
                 if (Pattern.compile(regex_beg).matcher(line).matches()){
                     String[] split = line.split(": ");
+                    varInt = new HashMap<>();
+                    varDouble = new HashMap<>();
+                    varString = new HashMap<>();
+                    names = new ArrayList<>();
                     test = new Test(Integer.parseInt(split[0]), split[1], split[2]);
                     tests.add(test);
                     System.out.println("BEGGINING - OK");
@@ -73,7 +79,15 @@ public class TestParser extends Test {
                 } else if(!line.equals('\n') && line.length() > 3) {
                     boolean isExit = line.trim().equals("exit");
 
-                    line = parseCommand(line);
+                    line = parseCommand(line.trim()).split("}")[0].trim();
+                    if (line.contains("."))
+                        line = line.split("\\.")[0].trim();
+                    if (line.equals("casting_error")) {
+                        System.out.println("CASTING ERROR");
+                        tests.get(tests.size()-1).isCorrect = false;
+                        continue;
+                    } else if(line.equals("var initialized"))
+                        continue;
 
                     tests.get(tests.size()-1).addCommand(line.trim());
                     line = br.readLine();
@@ -120,8 +134,67 @@ public class TestParser extends Test {
     public static String evaluateFunction(String functionCall) {
         String[] parts = functionCall.split("\\(");
         String functionName = parts[0];
-        String[] arguments = parts[1].split(",");
+        String[] arguments = {};
+        if (parts.length > 1)
+            arguments = parts[1].split(",");
+        String intPattern = "int [a-z]+ = \\d+|int [a-z]+ = \\{[^}]+";
+        String doublePattern = "double [a-z]+ = \\d+\\.\\d+|double [a-z]+ = \\{[^}]+";
+        String stringPattern = "string [a-z]+ = \\w+|string [a-z]+ = \\{[^}]+";
+        if(functionCall.matches(intPattern)) {
+            String[] split = functionCall.split(" ");
+            String varName = split[1];
+            if (names.contains(varName)) {
 
+            } else {
+
+            } //TODO test if vars of this name already exists - check also other types
+
+            int varValue;
+            try {
+                varValue = Integer.parseInt(parseCommand(split[3]+"}").split("}")[0]);
+            } catch (NumberFormatException e) {
+                return "casting_error";
+            }
+            varInt.put(varName, varValue);
+            names.add(varName);
+            return "var initialized";
+        } else if(functionCall.matches(stringPattern)) {
+            String[] split = functionCall.split(" ");
+            String varName = split[1];
+            if (names.contains(varName)) {
+
+            } else {
+
+            } //TODO test if vars of this name already exists - check also other types
+
+            String varValue;
+            try {
+                varValue = String.valueOf(parseCommand(split[3]+"}").split("}")[0]);
+            } catch (NumberFormatException e) {
+                return "casting_error";
+            }
+            varString.put(varName, varValue);
+            names.add(varName);
+            return "var initialized";
+        } else if(functionCall.matches(doublePattern)) {
+            String[] split = functionCall.split(" ");
+            String varName = split[1];
+            if (names.contains(varName)) {
+
+            } else {
+
+            } //TODO test if vars of this name already exists - check also other types
+
+            double varValue;
+            try {
+                varValue = Double.valueOf(parseCommand(split[3]+"}").split("}")[0]);
+            } catch (NumberFormatException e) {
+                return "casting_error";
+            }
+            varDouble.put(varName, varValue);
+            names.add(varName);
+            return "var initialized";
+        }
         if (functionName.equals("randomNumber")) {
             if (arguments.length == 2) {
                 int beg = Integer.parseInt(arguments[0]);

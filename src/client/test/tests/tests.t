@@ -1,3 +1,15 @@
+0: Parser Features: Testing various features of the parser
+    {int x = {randomNumber(10)}}
+    {int y = {randomNumber(10)}}
+    {int z = 123}
+    {string a = {randomString(16)}}
+    {string b = {randomString(16)}}
+    {string c = Hello_World}
+    {double d = {randomNumber(10)}.{randomNumber(10)}}
+    {double e = {randomNumber(10)}.{randomNumber(10)}}
+    {double f = 123.123}
+end
+
 1: Client Creation: Testing if you cas create a single client and then exit
     new:Testing
     ???
