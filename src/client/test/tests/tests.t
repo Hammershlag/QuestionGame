@@ -8,6 +8,8 @@
     {double d = {randomNumber(10)}.{randomNumber(10)}}
     {double e = {randomNumber(10)}.{randomNumber(10)}}
     {double f = 123.123}
+    {bool g = true}
+    {bool h = false}
 end
 
 1: Client Creation: Testing if you cas create a single client and then exit

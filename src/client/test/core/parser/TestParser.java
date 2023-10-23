@@ -28,8 +28,9 @@ public class TestParser extends Test {
     private static Map<String, String> varString = new HashMap<>();
     private static Map<String, Integer> varInt = new HashMap<>();
     private static Map<String, Double> varDouble = new HashMap<>();
+    private static Map<String, Boolean> varBool = new HashMap<>();
 
-    private static List<String> names = new ArrayList<>();
+    private static Map<String, String> names = new HashMap<>();
 
     public TestParser(String test_dir) {
         this.test_dir = test_dir;
@@ -44,10 +45,39 @@ public class TestParser extends Test {
             while((line = br.readLine()) != null) {
                 if (Pattern.compile(regex_beg).matcher(line).matches()){
                     String[] split = line.split(": ");
+                    if (varDouble.size() > 0){
+                        System.out.println();
+                        System.out.println("Double variables: ");
+                        System.out.println();
+                        varDouble.entrySet().forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue()));
+                        System.out.println();
+                    }
+                    if (varInt.size() > 0) {
+                        System.out.println();
+                        System.out.println("Integer variables: ");
+                        System.out.println();
+                        varInt.entrySet().forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue()));
+                        System.out.println();
+                    }
+                    if (varString.size() > 0) {
+                        System.out.println();
+                        System.out.println("String variables: ");
+                        System.out.println();
+                        varString.entrySet().forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue()));
+                        System.out.println();
+                    }
+                    if (varBool.size() > 0) {
+                        System.out.println();
+                        System.out.println("Boolean variables: ");
+                        System.out.println();
+                        varBool.entrySet().forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue()));
+                        System.out.println();
+                    }
                     varInt = new HashMap<>();
                     varDouble = new HashMap<>();
                     varString = new HashMap<>();
-                    names = new ArrayList<>();
+                    varBool = new HashMap<>();
+                    names = new HashMap<>();
                     test = new Test(Integer.parseInt(split[0]), split[1], split[2]);
                     tests.add(test);
                     System.out.println("BEGGINING - OK");
@@ -123,6 +153,9 @@ public class TestParser extends Test {
         while (matcher.find()) {
             String functionCall = matcher.group(1);
             String functionOutput = evaluateFunction(functionCall);
+            if (functionOutput.equals("err")) {
+                return "casting_error";
+            }
             matcher.appendReplacement(result, functionOutput);
         }
 
@@ -137,13 +170,15 @@ public class TestParser extends Test {
         String[] arguments = {};
         if (parts.length > 1)
             arguments = parts[1].split(",");
-        String intPattern = "int [a-z]+ = \\d+|int [a-z]+ = \\{[^}]+";
-        String doublePattern = "double [a-z]+ = \\d+\\.\\d+|double [a-z]+ = \\{[^}]+";
-        String stringPattern = "string [a-z]+ = \\w+|string [a-z]+ = \\{[^}]+";
+        String intPattern = "int [a-z]+ = (\\d+|\\{[^}]+)";
+        String doublePattern = "double [a-z]+ = (\\d+\\.\\d+|\\{[^}]+)";
+        String stringPattern = "string [a-z]+ = (\\w+|\\{[^}]+)";
+        String boolPattern = "bool [a-z]+ = (true|false|\\{[^}]+)";
         if(functionCall.matches(intPattern)) {
             String[] split = functionCall.split(" ");
             String varName = split[1];
-            if (names.contains(varName)) {
+            if (names.get(varName) != null) {
+                return "err";
 
             } else {
 
@@ -156,17 +191,11 @@ public class TestParser extends Test {
                 return "casting_error";
             }
             varInt.put(varName, varValue);
-            names.add(varName);
+            names.put(varName, "int");
             return "var initialized";
         } else if(functionCall.matches(stringPattern)) {
             String[] split = functionCall.split(" ");
             String varName = split[1];
-            if (names.contains(varName)) {
-
-            } else {
-
-            } //TODO test if vars of this name already exists - check also other types
-
             String varValue;
             try {
                 varValue = String.valueOf(parseCommand(split[3]+"}").split("}")[0]);
@@ -174,17 +203,11 @@ public class TestParser extends Test {
                 return "casting_error";
             }
             varString.put(varName, varValue);
-            names.add(varName);
+            names.put(varName, "string");
             return "var initialized";
         } else if(functionCall.matches(doublePattern)) {
             String[] split = functionCall.split(" ");
             String varName = split[1];
-            if (names.contains(varName)) {
-
-            } else {
-
-            } //TODO test if vars of this name already exists - check also other types
-
             double varValue;
             try {
                 varValue = Double.valueOf(parseCommand(split[3]+"}").split("}")[0]);
@@ -192,7 +215,19 @@ public class TestParser extends Test {
                 return "casting_error";
             }
             varDouble.put(varName, varValue);
-            names.add(varName);
+            names.put(varName, "double");
+            return "var initialized";
+        } else if(functionCall.matches(boolPattern)) {
+            String[] split = functionCall.split(" ");
+            String varName = split[1];
+            boolean varValue;
+            try {
+                varValue = Boolean.valueOf(parseCommand(split[3]+"}").split("}")[0]);
+            } catch (NumberFormatException e) {
+                return "casting_error";
+            }
+            varBool.put(varName, varValue);
+            names.put(varName, "bool");
             return "var initialized";
         }
         if (functionName.equals("randomNumber")) {

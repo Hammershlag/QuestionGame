@@ -120,4 +120,5 @@ All variable names should be different inside one test.
 - `int x = 0` - creates an integer variable named x and sets it to 0
 - `string x = 0` - creates a string variable named x and sets it to 0, stored as a string, doesn't have to be in quotes
 - `double x = 0` - creates a double variable named x and sets it to 0.0
+- `bool x = true/false` - creates a boolean variable named x and sets it to true/false
 
