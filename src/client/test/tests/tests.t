@@ -10,6 +10,12 @@
     {double f = 123.123}
     {bool g = true}
     {bool h = false}
+    {h}
+    ???
+    new:{c}
+    ???
+    1:newUser:{c}:{randomString(16)}
+    ???
 end
 
 1: Client Creation: Testing if you cas create a single client and then exit

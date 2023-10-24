@@ -122,6 +122,7 @@ public class TestParser extends Test {
                     tests.get(tests.size()-1).addCommand(line.trim());
                     line = br.readLine();
                     tests.get(tests.size()-1).addAnswer(line.trim());
+                    System.out.println(tests.get(tests.size()-1).getCommand(tests.get(tests.size()-1).getCommands().size()-1));
                     System.out.println("COMMAND - OK");
                     if (isExit)
                         System.out.println();
@@ -180,10 +181,7 @@ public class TestParser extends Test {
             if (names.get(varName) != null) {
                 return "err";
 
-            } else {
-
-            } //TODO test if vars of this name already exists - check also other types
-
+            }
             int varValue;
             try {
                 varValue = Integer.parseInt(parseCommand(split[3]+"}").split("}")[0]);
@@ -229,6 +227,18 @@ public class TestParser extends Test {
             varBool.put(varName, varValue);
             names.put(varName, "bool");
             return "var initialized";
+        }
+        //TODO variable usage
+        if (names.get(functionName) != null) {
+            System.out.println("USAGE OF VARIABLE");
+            if (names.get(functionName).equals("int"))
+                return String.valueOf(varInt.get(functionName));
+            else if (names.get(functionName).equals("double"))
+                return String.valueOf(varDouble.get(functionName));
+            else if (names.get(functionName).equals("string"))
+                return String.valueOf(varString.get(functionName));
+            else if (names.get(functionName).equals("bool"))
+                return String.valueOf(varBool.get(functionName));
         }
         if (functionName.equals("randomNumber")) {
             if (arguments.length == 2) {

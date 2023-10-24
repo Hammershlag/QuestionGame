@@ -104,4 +104,12 @@ public class Test {
         this.testId = testId;
     }
 
+    public String getCommand(int n) {
+        return commands.get(n);
+    }
+
+    public List<String> getCommands() {
+        return commands;
+    }
+
 }
